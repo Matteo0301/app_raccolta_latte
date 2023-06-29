@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/home.dart';
-import 'package:app_raccolta_latte/theme.dart';
 
 class Login extends StatefulWidget {
-  Login({Key? key, required this.title}) : super(key: key);
+  const Login({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -34,7 +33,7 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Username"),
+                      border: OutlineInputBorder(), labelText: 'Username'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Inserisci il nome utente';
@@ -50,7 +49,7 @@ class _LoginState extends State<Login> {
                   controller: passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Password"),
+                      border: OutlineInputBorder(), labelText: 'Password'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Inserisci la password';
@@ -73,10 +72,28 @@ class _LoginState extends State<Login> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home(title: widget.title)),
-                        );
+                        // request to the server
+                        String trueUsername = 'user',
+                            username = emailController.text;
+                        bool admin = true;
+                        if (username == trueUsername &&
+                            passwordController.text == 'a') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Home(
+                                      title: widget.title,
+                                      username: username,
+                                      admin: admin,
+                                    )),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Username o password errati, riprova')),
+                          );
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

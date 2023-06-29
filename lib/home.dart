@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:app_raccolta_latte/drawer.dart';
+import 'package:app_raccolta_latte/collections_list.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatelessWidget {
-  Home({Key? key, required this.title}) : super(key: key);
+  const Home(
+      {Key? key,
+      required this.title,
+      required this.username,
+      required this.admin})
+      : super(key: key);
   final String title;
+  final String username;
+  final bool admin;
   @override
   Widget build(BuildContext context) {
-    return HomePage(title: this.title);
+    return HomePage(
+      title: title,
+      admin: admin,
+      username: username,
+    );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage(
+      {Key? key,
+      required this.title,
+      required this.username,
+      required this.admin})
+      : super(key: key);
 
   final String title;
+  final String username;
+  final bool admin;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,101 +42,90 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void inputPopup() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          var quantityController = TextEditingController();
+          return AlertDialog(
+            title: Text('Inserisci'),
+            content: TextFormField(
+              controller: quantityController,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Quantità'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, quantityController.text);
+                },
+                child: Text('Aggiungi'),
+              ),
+            ],
+          );
+        }).then((value) => {
+          if (value != null)
+            {
+              setState(() {
+                _counter += int.parse(value);
+              })
+            }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget content;
+    Drawer? drawer;
+    Size screenSize = MediaQuery.of(context).size;
+    if (screenSize.width > 800) {
+      content = Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: AppMenu(
+              username: widget.username,
+              admin: widget.admin,
+            ),
+          ),
+          Expanded(
+              flex: 3,
+              child: CollectionsList(
+                counter: _counter,
+              )),
+        ],
+      );
+      drawer = null;
+    } else {
+      content = CollectionsList(
+        counter: _counter,
+      );
+      drawer = Drawer(
+          child: AppMenu(
+        username: widget.username,
+        admin: widget.admin,
+      ));
+    }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: const Color(0xff764abc)),
-              accountName: Text(
-                "Test",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              accountEmail: Text(
-                "",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.home,
-              ),
-              title: const Text('Page 1'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.train,
-              ),
-              title: const Text('Page 2'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.home,
-              ),
-              title: const Text('Logout'),
-              onTap: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-            ),
-            AboutListTile(
-              icon: Icon(
-                Icons.info,
-              ),
-              child: Text('About app'),
-              applicationIcon: Icon(
-                Icons.local_play,
-              ),
-              applicationName: 'My Cool App',
-              applicationVersion: '1.0.25',
-              applicationLegalese: '© 2019 Company',
-              aboutBoxChildren: [],
-            ),
-          ],
+        body: content,
+        floatingActionButton: FloatingActionButton(
+          onPressed: inputPopup,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
         ),
-      ),
-    );
+        drawer: drawer);
   }
 }

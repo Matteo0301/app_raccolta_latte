@@ -3,7 +3,7 @@ import 'package:app_raccolta_latte/login.dart';
 import 'package:app_raccolta_latte/theme.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,8 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Raccolta latte',
       theme: MyTheme().theme,
-      home: Login(title: 'Raccolta latte'),
+      home: const Login(title: 'Raccolta latte'),
     );
   }
 }
-
