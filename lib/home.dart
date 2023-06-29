@@ -48,26 +48,34 @@ class _HomePageState extends State<HomePage> {
         builder: (_) {
           var quantityController = TextEditingController();
           return AlertDialog(
-            title: Text('Inserisci'),
-            content: TextFormField(
-              controller: quantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Quantità'),
-            ),
+            title: const Text('Inserisci'),
+            content: Container(
+                padding: const EdgeInsets.all(10),
+                height: 100,
+                width: 100,
+                child: ListView(
+                  children: [
+                    TextFormField(
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'Quantità'),
+                    )
+                  ],
+                )),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Annulla'),
+                child: const Text('Annulla'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context, quantityController.text);
                 },
-                child: Text('Aggiungi'),
+                child: const Text('Aggiungi'),
               ),
             ],
           );
@@ -85,6 +93,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget content;
     Drawer? drawer;
+    bool leading = true;
     Size screenSize = MediaQuery.of(context).size;
     if (screenSize.width > 800) {
       content = Row(
@@ -104,6 +113,7 @@ class _HomePageState extends State<HomePage> {
         ],
       );
       drawer = null;
+      leading = false;
     } else {
       content = CollectionsList(
         counter: _counter,
@@ -116,10 +126,21 @@ class _HomePageState extends State<HomePage> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-        ),
+            title: Text(widget.title),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            leading: !leading
+                ? null
+                : Builder(builder: (context) {
+                    return IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {
+                        if (leading) {
+                          Scaffold.of(context).openDrawer();
+                        }
+                      },
+                    );
+                  })),
         body: content,
         floatingActionButton: FloatingActionButton(
           onPressed: inputPopup,

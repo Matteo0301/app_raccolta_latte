@@ -18,6 +18,7 @@ class AppMenu extends StatelessWidget {
             username,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
+              fontSize: 30.0,
             ),
           ),
           accountEmail: const Text(
