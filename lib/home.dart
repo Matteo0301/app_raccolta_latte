@@ -1,7 +1,10 @@
+import 'package:app_raccolta_latte/add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/drawer.dart';
 import 'package:app_raccolta_latte/collections_list.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:app_raccolta_latte/collections_model.dart';
 
 class Home extends StatelessWidget {
   const Home(
@@ -40,9 +43,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void inputPopup() {
+  /*void inputPopup() {
     showDialog(
         context: context,
         builder: (_) {
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               })
             }
         });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -105,48 +106,41 @@ class _HomePageState extends State<HomePage> {
               admin: widget.admin,
             ),
           ),
-          Expanded(
-              flex: 3,
-              child: CollectionsList(
-                counter: _counter,
-              )),
+          const Expanded(flex: 3, child: CollectionsList()),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = CollectionsList(
-        counter: _counter,
-      );
+      content = const CollectionsList();
       drawer = Drawer(
           child: AppMenu(
         username: widget.username,
         admin: widget.admin,
       ));
     }
-    return Scaffold(
-        appBar: AppBar(
-            title: Text(widget.title),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            leading: !leading
-                ? null
-                : Builder(builder: (context) {
-                    return IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        if (leading) {
-                          Scaffold.of(context).openDrawer();
-                        }
-                      },
-                    );
-                  })),
-        body: content,
-        floatingActionButton: FloatingActionButton(
-          onPressed: inputPopup,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
-        drawer: drawer);
+    return ChangeNotifierProvider(
+      create: (context) => CollectionsModel(),
+      child: Scaffold(
+          appBar: AppBar(
+              title: Text(widget.title),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              leading: !leading
+                  ? null
+                  : Builder(builder: (context) {
+                      return IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          if (leading) {
+                            Scaffold.of(context).openDrawer();
+                          }
+                        },
+                      );
+                    })),
+          body: content,
+          floatingActionButton: const AddButton(),
+          drawer: drawer),
+    );
   }
 }
