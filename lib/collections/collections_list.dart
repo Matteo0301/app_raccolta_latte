@@ -1,4 +1,4 @@
-import 'package:app_raccolta_latte/collections_model.dart';
+import 'package:app_raccolta_latte/collections/collections_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

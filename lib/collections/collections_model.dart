@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:app_raccolta_latte/collection.dart';
+import 'package:app_raccolta_latte/collections/collection.dart';
 
 class CollectionsModel extends ChangeNotifier {
   final List<Collection> _items = [

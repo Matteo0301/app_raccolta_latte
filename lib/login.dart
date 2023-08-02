@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_raccolta_latte/home.dart';
+import 'package:app_raccolta_latte/collections/home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key, required this.title}) : super(key: key);
