@@ -33,7 +33,8 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Username'),
+                      border: OutlineInputBorder(),
+                      labelText: AutofillHints.username),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Inserisci il nome utente';
@@ -49,7 +50,8 @@ class _LoginState extends State<Login> {
                   controller: passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Password'),
+                      border: OutlineInputBorder(),
+                      labelText: AutofillHints.password),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Inserisci la password';

@@ -1,3 +1,5 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "cmake.sourceDirectory": "/home/matteo2001/Desktop/Projects/app_raccolta_latte/linux",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

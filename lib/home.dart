@@ -2,7 +2,6 @@ import 'package:app_raccolta_latte/add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/drawer.dart';
 import 'package:app_raccolta_latte/collections_list.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:app_raccolta_latte/collections_model.dart';
 
@@ -26,7 +25,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage(
       {Key? key,
       required this.title,
@@ -37,58 +36,6 @@ class HomePage extends StatefulWidget {
   final String title;
   final String username;
   final bool admin;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  /*void inputPopup() {
-    showDialog(
-        context: context,
-        builder: (_) {
-          var quantityController = TextEditingController();
-          return AlertDialog(
-            title: const Text('Inserisci'),
-            content: Container(
-                padding: const EdgeInsets.all(10),
-                height: 100,
-                width: 100,
-                child: ListView(
-                  children: [
-                    TextFormField(
-                      controller: quantityController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Quantità'),
-                    )
-                  ],
-                )),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Annulla'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context, quantityController.text);
-                },
-                child: const Text('Aggiungi'),
-              ),
-            ],
-          );
-        }).then((value) => {
-          if (value != null)
-            {
-              setState(() {
-                _counter += int.parse(value);
-              })
-            }
-        });
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +49,8 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 1,
             child: AppMenu(
-              username: widget.username,
-              admin: widget.admin,
+              username: username,
+              admin: admin,
             ),
           ),
           const Expanded(flex: 3, child: CollectionsList()),
@@ -115,17 +62,30 @@ class _HomePageState extends State<HomePage> {
       content = const CollectionsList();
       drawer = Drawer(
           child: AppMenu(
-        username: widget.username,
-        admin: widget.admin,
+        username: username,
+        admin: admin,
       ));
     }
     return ChangeNotifierProvider(
       create: (context) => CollectionsModel(),
       child: Scaffold(
           appBar: AppBar(
-              title: Text(widget.title),
+              title: Text(title),
               centerTitle: true,
               automaticallyImplyLeading: false,
+              actions: [
+                Consumer<CollectionsModel>(
+                  builder: (context, collections, child) {
+                    return IconButton(
+                        onPressed: () {
+                          collections.removeSelected();
+                        },
+                        icon: const Icon(Icons.delete));
+                  },
+                ),
+                // TODO this is here only to resolve a bug, should be removed when ready
+                IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
+              ],
               leading: !leading
                   ? null
                   : Builder(builder: (context) {
@@ -139,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     })),
           body: content,
-          floatingActionButton: const AddButton(),
+          floatingActionButton: AddButton(),
           drawer: drawer),
     );
   }

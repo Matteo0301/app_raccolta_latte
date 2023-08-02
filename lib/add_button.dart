@@ -1,12 +1,14 @@
+import 'package:app_raccolta_latte/collection.dart';
 import 'package:app_raccolta_latte/collections_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatelessWidget {
-  const AddButton({Key? key}) : super(key: key);
+  AddButton({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
 
-  Future<int?> inputPopup(BuildContext context) async {
+  Future<Collection?> inputPopup(BuildContext context) async {
     String? res = await showDialog(
         context: context,
         builder: (_) {
@@ -19,15 +21,20 @@ class AddButton extends StatelessWidget {
                 width: 100,
                 child: ListView(
                   children: [
-                    TextFormField(
-                      controller: quantityController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Quantità'),
-                    )
+                    Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: quantityController,
+                          keyboardType: TextInputType.number,
+                          validator: (value) =>
+                              value!.isEmpty ? 'Inserisci la quantità' : null,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Quantità'),
+                        ))
                   ],
                 )),
             actions: [
@@ -37,7 +44,13 @@ class AddButton extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context, quantityController.text);
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    Navigator.pop(context, quantityController.text);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Inserisci un valore')));
+                  }
                 },
                 child: const Text('Aggiungi'),
               ),
@@ -48,7 +61,9 @@ class AddButton extends StatelessWidget {
     if (res == null) {
       return null;
     }
-    return int.parse(res);
+    final quantity = double.parse(res);
+    return Collection('user', 'origin', quantity,
+        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
   }
 
   @override
@@ -57,7 +72,7 @@ class AddButton extends StatelessWidget {
       builder: (context, collections, child) {
         return FloatingActionButton.extended(
           onPressed: () async {
-            int? res = await inputPopup(context);
+            Collection? res = await inputPopup(context);
             debugPrint('res2: $res');
             if (res != null) {
               collections.add(res);

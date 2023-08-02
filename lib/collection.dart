@@ -5,4 +5,9 @@ class Collection {
   final String date;
 
   Collection(this.user, this.origin, this.quantity, this.date);
+
+  @override
+  String toString() {
+    return 'Collection{user: $user,  quantity: $quantity}';
+  }
 }

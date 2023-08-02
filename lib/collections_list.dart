@@ -11,28 +11,25 @@ class CollectionsList extends StatelessWidget {
       builder: (context, collections, child) {
         return Center(
             child: ListView.builder(
-                reverse: true,
                 itemCount: collections.items.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(
-                        '${collections.items[collections.items.length - index - 1]}'),
+                        style: const TextStyle(fontSize: 20),
+                        'Conferente: ${collections.items[collections.items.length - index - 1].origin}'),
+                    subtitle: Text(
+                        'Quantità: ${collections.items[collections.items.length - index - 1].quantity}'),
+                    trailing: Text(
+                        '${collections.items[collections.items.length - index - 1].user}   (${collections.items[collections.items.length - index - 1].date})'),
+                    selected: collections.selected
+                        .contains(collections.items.length - index - 1),
+                    selectedTileColor: Colors.blue[100],
+                    onTap: () {
+                      collections
+                          .toggleSelected(collections.items.length - index - 1);
+                    },
                   );
-                })
-            /*Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '${collections.items.length}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              
-            ],
-          ),*/
-            );
+                }));
       },
     );
   }
