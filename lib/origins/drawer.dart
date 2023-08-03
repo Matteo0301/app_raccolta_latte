@@ -1,4 +1,4 @@
-import 'package:app_raccolta_latte/origins/origin_page.dart';
+import 'package:app_raccolta_latte/collections/home.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/theme.dart';
 
@@ -33,15 +33,15 @@ class AppMenu extends StatelessWidget {
         ListTile(
           title: const Text('Home'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Home(title: '', username: username, admin: admin);
+            }));
           },
         ),
         ListTile(
           title: const Text('Conferenti'),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return OriginPage(title: '', username: username, admin: admin);
-            }));
+            Navigator.pop(context);
           },
         ),
         ListTile(
