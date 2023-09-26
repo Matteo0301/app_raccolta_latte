@@ -1,7 +1,8 @@
-import 'package:app_raccolta_latte/origins/origin_page.dart';
-import 'package:app_raccolta_latte/users/users_page.dart';
+import 'package:app_raccolta_latte/collections/home.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/theme.dart';
+
+import '../origins/origin_page.dart';
 
 class AppMenu extends StatelessWidget {
   final String username;
@@ -34,7 +35,9 @@ class AppMenu extends StatelessWidget {
         ListTile(
           title: const Text('Home'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Home(title: '', username: username, admin: admin);
+            }));
           },
         ),
         ListTile(
@@ -48,9 +51,7 @@ class AppMenu extends StatelessWidget {
         ListTile(
           title: const Text('Utenti'),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return UsersPage(title: '', username: username, admin: admin);
-            }));
+            Navigator.pop(context);
           },
         ),
         ListTile(

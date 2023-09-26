@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/collections/home.dart';
+import 'package:app_raccolta_latte/requests.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key, required this.title}) : super(key: key);
@@ -72,21 +75,21 @@ class _LoginState extends State<Login> {
                           const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 14)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // request to the server
-                        String trueUsername = 'user',
-                            username = emailController.text;
-                        bool admin = true;
-                        if (username == trueUsername &&
-                            passwordController.text == 'a') {
+                        String username = emailController.text;
+                        String password = passwordController.text;
+                        User? user = await login_request(username, password);
+                        log('user: $user');
+                        if (user != null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Home(
                                       title: widget.title,
-                                      username: username,
-                                      admin: admin,
+                                      username: user.username,
+                                      admin: user.admin,
                                     )),
                           );
                         } else {

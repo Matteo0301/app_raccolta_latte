@@ -2,6 +2,8 @@ import 'package:app_raccolta_latte/collections/home.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/theme.dart';
 
+import '../users/users_page.dart';
+
 class AppMenu extends StatelessWidget {
   final String username;
   final bool admin;
@@ -42,6 +44,14 @@ class AppMenu extends StatelessWidget {
           title: const Text('Conferenti'),
           onTap: () {
             Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          title: const Text('Utenti'),
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return UsersPage(title: '', username: username, admin: admin);
+            }));
           },
         ),
         ListTile(
