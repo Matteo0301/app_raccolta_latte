@@ -1,4 +1,5 @@
 import 'package:app_raccolta_latte/collections/home.dart';
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/theme.dart';
 
@@ -60,6 +61,7 @@ class AppMenu extends StatelessWidget {
           ),
           title: const Text('Logout'),
           onTap: () {
+            logout();
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
         ),

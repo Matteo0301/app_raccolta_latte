@@ -80,25 +80,25 @@ class _LoginState extends State<Login> {
                         // request to the server
                         String username = emailController.text;
                         String password = passwordController.text;
-                        User? user = await login_request(username, password);
-                        log('user: $user');
-                        if (user != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Home(
-                                      title: widget.title,
-                                      username: user.username,
-                                      admin: user.admin,
-                                    )),
-                          );
-                        } else {
+
+                        login_request(username, password).then(
+                          (user) {
+                            log('user: $user');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Home(
+                                        title: widget.title,
+                                        username: user.username,
+                                        admin: user.admin,
+                                      )),
+                            );
+                          },
+                        ).catchError((error) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Username o password errati, riprova')),
+                            SnackBar(content: Text(error.toString())),
                           );
-                        }
+                        });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

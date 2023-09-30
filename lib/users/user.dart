@@ -12,4 +12,8 @@ class User {
   String toString() {
     return 'User{name: $name, admin: $isAdmin}';
   }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(json['username'], json['admin']);
+  }
 }
