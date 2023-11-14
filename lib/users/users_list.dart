@@ -13,10 +13,11 @@ class UsersList extends StatelessWidget {
       return FutureBuilder(
           future: getUsers(),
           builder: (context, snapshot) {
+            print('FutureBuilder');
             if (snapshot.hasError) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text('${snapshot.error}')));
-              return Center(child: Text('Nessun utente trovato'));
+              return const Center(child: Text('Nessun utente trovato'));
             } else if (snapshot.hasData) {
               List<User> list = snapshot.data as List<User>;
               users.removeAll();

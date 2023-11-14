@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
                         String username = emailController.text;
                         String password = passwordController.text;
 
-                        login_request(username, password).then(
+                        loginRequest(username, password).then(
                           (user) {
                             log('user: $user');
                             Navigator.push(

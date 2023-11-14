@@ -11,71 +11,126 @@ class AppMenu extends StatelessWidget {
   const AppMenu({super.key, required this.username, required this.admin});
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      // Important: Remove any padding from the ListView.
-      padding: EdgeInsets.zero,
-      children: [
-        UserAccountsDrawerHeader(
-          decoration: const BoxDecoration(color: MyTheme.mainColor),
-          accountName: Text(
-            username,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30.0,
+    if (admin) {
+      return ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: [
+          UserAccountsDrawerHeader(
+            decoration: const BoxDecoration(color: MyTheme.mainColor),
+            accountName: Text(
+              username,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+            accountEmail: const Text(
+              '',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
             ),
           ),
-          accountEmail: const Text(
-            '',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15.0,
+          ListTile(
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Home(title: '', username: username, admin: admin);
+              }));
+            },
+          ),
+          ListTile(
+            title: const Text('Conferenti'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Utenti'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return UsersPage(title: '', username: username, admin: admin);
+              }));
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.logout_rounded,
+            ),
+            title: const Text('Logout'),
+            onTap: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          ),
+          const AboutListTile(
+            icon: Icon(
+              Icons.info,
+            ),
+            applicationIcon: Icon(
+              Icons.local_play,
+            ),
+            applicationName: 'App Raccolta Latte',
+            applicationVersion: '1.0.0',
+            aboutBoxChildren: [],
+            child: Text('About app'),
+          ),
+        ],
+      );
+    } else {
+      return ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: [
+          UserAccountsDrawerHeader(
+            decoration: const BoxDecoration(color: MyTheme.mainColor),
+            accountName: Text(
+              username,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+            accountEmail: const Text(
+              '',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
             ),
           ),
-        ),
-        ListTile(
-          title: const Text('Home'),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Home(title: '', username: username, admin: admin);
-            }));
-          },
-        ),
-        ListTile(
-          title: const Text('Conferenti'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          title: const Text('Utenti'),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return UsersPage(title: '', username: username, admin: admin);
-            }));
-          },
-        ),
-        ListTile(
-          leading: const Icon(
-            Icons.logout_rounded,
+          ListTile(
+            title: const Text('Home'),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Home(title: '', username: username, admin: admin);
+              }));
+            },
           ),
-          title: const Text('Logout'),
-          onTap: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          },
-        ),
-        const AboutListTile(
-          icon: Icon(
-            Icons.info,
+          ListTile(
+            leading: const Icon(
+              Icons.logout_rounded,
+            ),
+            title: const Text('Logout'),
+            onTap: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
           ),
-          applicationIcon: Icon(
-            Icons.local_play,
+          const AboutListTile(
+            icon: Icon(
+              Icons.info,
+            ),
+            applicationIcon: Icon(
+              Icons.local_play,
+            ),
+            applicationName: 'App Raccolta Latte',
+            applicationVersion: '1.0.0',
+            aboutBoxChildren: [],
+            child: Text('About app'),
           ),
-          applicationName: 'App Raccolta Latte',
-          applicationVersion: '1.0.0',
-          aboutBoxChildren: [],
-          child: Text('About app'),
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }

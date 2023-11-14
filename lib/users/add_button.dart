@@ -1,5 +1,7 @@
-import 'package:app_raccolta_latte/origins/origin.dart';
-import 'package:app_raccolta_latte/origins/origins_model.dart';
+import 'dart:convert';
+
+import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/users/checkbox.dart';
 import 'package:app_raccolta_latte/users/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +19,14 @@ class AddButton extends StatefulWidget {
 
 class AddButtonState extends State<AddButton> {
   final _formKey = GlobalKey<FormState>();
+
   bool checkboxValue = false;
+
+  void toggleCheckbox(bool value) {
+    setState(() {
+      checkboxValue = value;
+    });
+  }
 
   Future<User?> inputPopup(BuildContext context) async {
     checkboxValue = false;
@@ -25,11 +34,12 @@ class AddButtonState extends State<AddButton> {
         context: context,
         builder: (_) {
           var nameController = TextEditingController();
+          var passwordController = TextEditingController();
           return AlertDialog(
             title: const Text('Inserisci'),
             content: Container(
                 padding: const EdgeInsets.all(10),
-                height: 100,
+                height: 250,
                 width: 100,
                 child: ListView(
                   children: [
@@ -37,27 +47,38 @@ class AddButtonState extends State<AddButton> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            TextFormField(
-                              controller: nameController,
-                              validator: (value) => value!.isEmpty
-                                  ? 'Inserisci il nuovo utente'
-                                  : null,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Nome'),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 16),
+                              child: TextFormField(
+                                controller: nameController,
+                                validator: (value) => value!.isEmpty
+                                    ? 'Inserisci il nuovo utente'
+                                    : null,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Nome'),
+                              ),
                             ),
-                            Checkbox(
-                                value: checkboxValue,
-                                onChanged: (value) {
-                                  
-                                  setState(() {
-                                    if (value == null) {
-                                      checkboxValue = false;
-                                    } else {
-                                      checkboxValue = value;
-                                    }
-                                  });
-                                })
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 16),
+                              child: TextFormField(
+                                controller: passwordController,
+                                validator: (value) => value!.isEmpty
+                                    ? 'Inserisci la password'
+                                    : null,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Password'),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 16),
+                                child:
+                                    AdminCheckbox(onChanged: toggleCheckbox)),
                           ],
                         ))
                   ],
@@ -71,7 +92,11 @@ class AddButtonState extends State<AddButton> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pop(context, User(nameController.text, checkboxValue));
+                    Navigator.pop(
+                        context,
+                        User(nameController.text, checkboxValue,
+                                password: passwordController.text)
+                            .toJson());
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Inserisci un valore')));
@@ -85,7 +110,7 @@ class AddButtonState extends State<AddButton> {
     if (res == null) {
       return null;
     }
-    User u = res as User;
+    User u = User.fromJson(jsonDecode(res));
     return u;
   }
 
@@ -98,7 +123,23 @@ class AddButtonState extends State<AddButton> {
             User? res = await inputPopup(context);
             debugPrint('res2: $res');
             if (res != null) {
-              users.add(res);
+              await addUser(
+                res,
+                res.password!,
+              )
+                  .then((value) => {
+                        res.password = null,
+                        users.add(res),
+                        users.notifyListeners()
+                      })
+                  .catchError((error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())),
+                );
+                users.notifyListeners();
+                return <dynamic>{};
+              });
+              //users.add(res);
             }
             debugPrint('lista: ${users.items}');
           },

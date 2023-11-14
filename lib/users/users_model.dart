@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class UsersModel extends ChangeNotifier {
   final List<User> _items = [User('User1', false)];
+  final Set<int> _selected = {};
 
   UnmodifiableListView<User> get items => UnmodifiableListView(_items);
-
-  final Set<int> selected = {};
+  UnmodifiableSetView<int> get selected => UnmodifiableSetView(_selected);
 
   void add(User item) {
     _items.add(item);
@@ -22,29 +22,17 @@ class UsersModel extends ChangeNotifier {
   }
 
   void toggleSelected(int index) {
-    if (!selected.contains(index)) {
-      selected.add(index);
+    if (!_selected.contains(index)) {
+      _selected.add(index);
     } else {
-      selected.remove(index);
+      _selected.remove(index);
     }
-    print(selected);
-    //notifyListeners();
-  }
-
-  void removeSelected() {
-    final List<int> l = selected.toList();
-    l.sort();
-    for (int i in l.reversed) {
-      print(i);
-      _items.removeAt(i);
-    }
-    print(_items);
-    selected.clear();
+    print(_selected);
     notifyListeners();
   }
 
-  void toggleAdmin(int index) {
-    _items[index].toggleAdmin();
-    //notifyListeners();
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
   }
 }

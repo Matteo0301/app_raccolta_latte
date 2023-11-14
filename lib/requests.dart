@@ -23,17 +23,17 @@ void logout() {
   token = '';
 }
 
-Future<LoggedUser> login_request(username, password) async {
+Future<LoggedUser> loginRequest(username, password) async {
   try {
     final response =
         await http.get(Uri.parse('$baseUrl/users/auth/$username/$password'));
     if (response.statusCode == 200) {
       return LoggedUser.fromJson(jsonDecode(response.body), username);
     } else {
-      return Future.error("Credenziali errate");
+      return Future.error('Credenziali errate');
     }
   } catch (e) {
-    return Future.error("Impossibile connettersi al server");
+    return Future.error('Impossibile connettersi al server');
   }
 }
 
@@ -48,9 +48,49 @@ Future<List<User>> getUsers() async {
       }
       return users;
     } else {
-      return Future.error("Operazione non permessa");
+      return Future.error('Operazione non permessa');
     }
   } catch (e) {
-    return Future.error(e.toString());
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<void> removeUsers(List<User> users) async {
+  try {
+    for (var u in users) {
+      print('$baseUrl/users/${u.name}');
+      final response = await http.delete(Uri.parse('$baseUrl/users/${u.name}'),
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      if (response.statusCode != 204) {
+        return Future.error('Operazione non permessa');
+      }
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<void> addUser(User user, String pass) async {
+  try {
+    final response = await http.put(Uri.parse('$baseUrl/users'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'username': user.name,
+          'admin': user.isAdmin.toString(),
+          'password': pass
+        }));
+    /* print(jsonEncode(
+        {'username': user.name, 'admin': user.isAdmin, 'password': pass})); */
+    print('Response: ${response.body}');
+    if (response.statusCode != 201) {
+      print('Wrong status code');
+      return Future.error('Errore durante l\'operazione');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return Future.error('Impossibile connettersi al server');
   }
 }

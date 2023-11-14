@@ -1,3 +1,5 @@
+import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/users/user.dart';
 import 'package:app_raccolta_latte/users/users_list.dart';
 import 'package:app_raccolta_latte/users/users_model.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +56,22 @@ class UsersPage extends StatelessWidget {
             automaticallyImplyLeading: false,
             actions: [
               Consumer<UsersModel>(
-                builder: (context, origins, child) {
+                builder: (context, u, child) {
                   return IconButton(
-                      onPressed: () {
-                        origins.removeSelected();
+                      onPressed: () async {
+                        List<User> users = [];
+                        for (var index in u.selected) {
+                          users.add(u.items[index]);
+                        }
+                        removeUsers(users)
+                            .then((value) => {u.notifyListeners()})
+                            .catchError((error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.toString())),
+                          );
+                          u.notifyListeners();
+                          return <dynamic>{};
+                        });
                       },
                       icon: const Icon(Icons.delete));
                 },
