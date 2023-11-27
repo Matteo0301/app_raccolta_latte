@@ -42,4 +42,9 @@ class OriginsModel extends ChangeNotifier {
     selected.clear();
     notifyListeners();
   }
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
+  }
 }

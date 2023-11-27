@@ -1,5 +1,7 @@
+import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/origins/origins_list.dart';
 import 'package:app_raccolta_latte/origins/origins_model.dart';
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_button.dart';
@@ -56,8 +58,20 @@ class OriginPage extends StatelessWidget {
               Consumer<OriginsModel>(
                 builder: (context, origins, child) {
                   return IconButton(
-                      onPressed: () {
-                        origins.removeSelected();
+                      onPressed: () async {
+                        List<Origin> users = [];
+                        for (var index in origins.selected) {
+                          users.add(origins.items[index]);
+                        }
+                        removeOrigins(users)
+                            .then((value) => {origins.notifyListeners()})
+                            .catchError((error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.toString())),
+                          );
+                          origins.notifyListeners();
+                          return <dynamic>{};
+                        });
                       },
                       icon: const Icon(Icons.delete));
                 },
