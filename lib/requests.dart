@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 
 import 'package:http/http.dart' as http;
@@ -82,8 +83,58 @@ Future<void> addUser(User user, String pass) async {
           'admin': user.isAdmin.toString(),
           'password': pass
         }));
-    /* print(jsonEncode(
-        {'username': user.name, 'admin': user.isAdmin, 'password': pass})); */
+    print('Response: ${response.body}');
+    if (response.statusCode != 201) {
+      print('Wrong status code');
+      return Future.error('Errore durante l\'operazione');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<List<Origin>> getOrigins() async {
+  try {
+    print(Uri.parse('$baseUrl/origins'));
+    final response = await http.get(Uri.parse('$baseUrl/origins'),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      List<Origin> origins = [];
+      for (var user in jsonDecode(response.body)) {
+        origins.add(Origin.fromJson(user));
+      }
+      return origins;
+    } else {
+      return Future.error('Operazione non permessa');
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<void> removeOrigins(List<Origin> origins) async {
+  try {
+    for (var o in origins) {
+      print('$baseUrl/origins/${o.name}');
+      final response = await http.delete(Uri.parse('$baseUrl/users/${o.name}'),
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      if (response.statusCode != 204) {
+        return Future.error('Operazione non permessa');
+      }
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<void> addOrigin(Origin origin) async {
+  try {
+    final response = await http.post(
+        Uri.parse('$baseUrl/origins/${origin.name}'),
+        headers: {'Authorization': 'Bearer $token'});
     print('Response: ${response.body}');
     if (response.statusCode != 201) {
       print('Wrong status code');

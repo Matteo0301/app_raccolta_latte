@@ -12,13 +12,13 @@ class OriginsModel extends ChangeNotifier {
   void add(Origin item) {
     _items.add(item);
     // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
+    //notifyListeners();
   }
 
   void removeAll() {
     _items.clear();
     // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
+    //notifyListeners();
   }
 
   void toggleSelected(int index) {
