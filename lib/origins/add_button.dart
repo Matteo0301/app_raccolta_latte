@@ -1,5 +1,6 @@
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/origins/origins_model.dart';
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +68,17 @@ class AddButton extends StatelessWidget {
             Origin? res = await inputPopup(context);
             debugPrint('res2: $res');
             if (res != null) {
-              collections.add(res);
+              await addOrigin(res)
+                  .then((value) =>
+                      {collections.add(res), collections.notifyListeners()})
+                  .catchError((error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())),
+                );
+                collections.notifyListeners();
+                return <dynamic>{};
+              });
+              //collections.add(res);
             }
             debugPrint('lista: ${collections.items}');
           },
