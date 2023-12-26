@@ -5,35 +5,59 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatelessWidget {
-  AddButton({Key? key}) : super(key: key);
+  AddButton(this.username, {Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final String username;
 
   Future<Collection?> inputPopup(BuildContext context) async {
     String? res = await showDialog(
         context: context,
         builder: (_) {
           var quantityController = TextEditingController();
+          var quantity2Controller = TextEditingController(text: '0');
           return AlertDialog(
             title: const Text('Inserisci'),
             content: Container(
                 padding: const EdgeInsets.all(10),
-                height: 100,
+                height: 300,
                 width: 100,
                 child: ListView(
                   children: [
                     Form(
                         key: _formKey,
-                        child: TextFormField(
-                          controller: quantityController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Inserisci la quantità' : null,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: quantityController,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) => value!.isEmpty
+                                      ? 'Inserisci la quantità'
+                                      : null,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Quantità'),
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: quantity2Controller,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) => value!.isEmpty
+                                      ? 'Inserisci il latte di seconda'
+                                      : null,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Seconda'),
+                                ))
                           ],
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Quantità'),
                         ))
                   ],
                 )),
@@ -46,7 +70,11 @@ class AddButton extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pop(context, quantityController.text);
+                    Navigator.pop(
+                        context,
+                        quantityController.text +
+                            ";" +
+                            quantity2Controller.text);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Inserisci un valore')));
@@ -61,8 +89,10 @@ class AddButton extends StatelessWidget {
     if (res == null) {
       return null;
     }
-    final quantity = double.parse(res);
-    return Collection('user', 'origin', quantity,
+    var tmp = res.split(';');
+    final quantity = double.parse(tmp[0]);
+    final quantity2 = double.parse(tmp[1]);
+    return Collection(username, 'origin', quantity, quantity2,
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
   }
 

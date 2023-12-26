@@ -99,7 +99,7 @@ class HomePage extends StatelessWidget {
                       );
                     })),
           body: content,
-          floatingActionButton: AddButton(),
+          floatingActionButton: AddButton(username),
           drawer: drawer),
     );
   }

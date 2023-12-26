@@ -18,7 +18,7 @@ class CollectionsList extends StatelessWidget {
                         style: const TextStyle(fontSize: 20),
                         'Conferente: ${collections.items[collections.items.length - index - 1].origin}'),
                     subtitle: Text(
-                        'Quantità: ${collections.items[collections.items.length - index - 1].quantity}'),
+                        'Quantità: ${collections.items[collections.items.length - index - 1].quantity}, Seconda: ${collections.items[collections.items.length - index - 1].quantity2}'),
                     trailing: Text(
                         '${collections.items[collections.items.length - index - 1].user}   (${collections.items[collections.items.length - index - 1].date})'),
                     selected: collections.selected

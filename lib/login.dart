@@ -68,13 +68,13 @@ class _LoginState extends State<Login> {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
-                    style: ButtonStyle(
+                    /* style: ButtonStyle(
                       textStyle: MaterialStateProperty.all(
                           Theme.of(context).textTheme.headlineSmall),
                       padding: MaterialStateProperty.all(
                           const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 14)),
-                    ),
+                    ), */
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // request to the server
