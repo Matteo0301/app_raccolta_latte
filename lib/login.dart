@@ -107,7 +107,14 @@ class _LoginState extends State<Login> {
                         );
                       }
                     },
-                    child: const Text('Login'),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text('Login', style: TextStyle(fontSize: 20)),
+                    ),
+                    /* const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text('Login', style: TextStyle(fontSize: 20)),
+                    ), */
                   ),
                 ),
               ),

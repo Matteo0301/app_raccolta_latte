@@ -22,5 +22,20 @@ class MyTheme {
       cardColor: mainColor,
       brightness: Brightness.dark,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: mainColor,
+        onPrimary: Colors.white,
+        onSurface: Colors.grey,
+        textStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        minimumSize: const Size(200, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+    ),
   );
 }
