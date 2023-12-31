@@ -29,7 +29,7 @@ class CollectionsModel extends ChangeNotifier {
   void removeAll() {
     _items.clear();
     // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
+    //notifyListeners();
   }
 
   void toggleSelected(int index) {

@@ -13,7 +13,6 @@ class UsersList extends StatelessWidget {
       return FutureBuilder(
           future: getUsers(),
           builder: (context, snapshot) {
-            print('FutureBuilder');
             if (snapshot.hasError) {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text('${snapshot.error}')));

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 
@@ -26,17 +28,44 @@ void logout() {
 
 Future<LoggedUser> loginRequest(username, password) async {
   try {
-    final response =
-        await http.get(Uri.parse('$baseUrl/users/auth/$username/$password'));
+    final response = await runZonedGuarded<Future<http.Response?>>(() async {
+      try {
+        return await http
+            .get(Uri.parse('$baseUrl/users/auth/$username/$password'))
+            .timeout(const Duration(seconds: 10));
+      } catch (e) {
+        return null;
+      }
+    }, (error, stack) {
+      print('Impossibile connettersi al server');
+      //throw 'Impossibile connettersi al server';
+    });
+    if (response == null) {
+      return Future.error('Impossibile connettersi al server');
+    }
     if (response.statusCode == 200) {
       return LoggedUser.fromJson(jsonDecode(response.body), username);
     } else {
       return Future.error('Credenziali errate');
     }
   } catch (e) {
-    return Future.error('Impossibile connettersi al server');
+    return Future.error(e);
   }
 }
+
+/* Future<LoggedUser> loginRequest(username, password) async => 
+runZonedGuarded<Future<Response?>>(() async {
+      return await client.post(path,
+          data: json.encode(parameter),
+          options: Options(
+            headers: headers
+              ..addAll(<String, String>{
+                'Authorization': await localData.read(accessTokenName) ?? ''
+              }),
+          ));
+    }, (error, stack) {
+      throw Exception('SERVER DOWN');
+    }); */
 
 Future<List<User>> getUsers() async {
   try {
@@ -142,6 +171,32 @@ Future<void> addOrigin(Origin origin) async {
     }
   } catch (e) {
     print('Error: $e');
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<List<Collection>> getCollections(
+    String username, bool admin, String startDate, String endDate) async {
+  final String url;
+  if (admin) {
+    url = '$baseUrl/collections/$startDate/$endDate';
+  } else {
+    url = '$baseUrl/collections/$username/$startDate/$endDate';
+  }
+  try {
+    final response = await http.get(Uri.parse(url),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    if (response.statusCode == 200) {
+      List<Collection> collections = [];
+      for (var user in jsonDecode(response.body)) {
+        collections.add(Collection.fromJson(user));
+      }
+      print(collections.toString());
+      return collections;
+    } else {
+      return Future.error('Operazione non permessa');
+    }
+  } catch (e) {
     return Future.error('Impossibile connettersi al server');
   }
 }

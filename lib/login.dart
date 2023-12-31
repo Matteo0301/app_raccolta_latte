@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                         String password = passwordController.text;
 
                         loginRequest(username, password).then(
-                          (user) {
+                          (user) async {
                             log('user: $user');
                             Navigator.push(
                               context,
@@ -94,11 +94,13 @@ class _LoginState extends State<Login> {
                                       )),
                             );
                           },
-                        ).catchError((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          );
-                        });
+                        ).onError(
+                          (error, stackTrace) async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error.toString())),
+                            );
+                          },
+                        );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

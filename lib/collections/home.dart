@@ -53,13 +53,13 @@ class HomePage extends StatelessWidget {
               admin: admin,
             ),
           ),
-          const Expanded(flex: 3, child: CollectionsList()),
+          Expanded(flex: 3, child: CollectionsList(username, admin)),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = const CollectionsList();
+      content = CollectionsList(username, admin);
       drawer = Drawer(
           child: AppMenu(
         username: username,
