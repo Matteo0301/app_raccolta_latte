@@ -25,6 +25,9 @@ class OriginsList extends StatelessWidget {
                 for (var user in list) {
                   origins.add(user);
                 }
+                if (list.isEmpty) {
+                  return const Center(child: Text('Nessun conferente trovato'));
+                }
                 return Center(
                     child: ListView.builder(
                         itemCount: origins.items.length,

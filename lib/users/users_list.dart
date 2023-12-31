@@ -23,6 +23,9 @@ class UsersList extends StatelessWidget {
               for (var user in list) {
                 users.add(user);
               }
+              if (list.isEmpty) {
+                return const Center(child: Text('Nessun utente trovato'));
+              }
               return Center(
                   child: ListView.builder(
                       itemCount: users.items.length,
