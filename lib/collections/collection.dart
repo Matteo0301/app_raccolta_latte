@@ -1,9 +1,9 @@
 class Collection {
   final String user;
   final String origin;
-  final double quantity;
+  final int quantity;
   final String date;
-  final double quantity2;
+  final int quantity2;
 
   Collection(this.user, this.origin, this.quantity, this.quantity2, this.date);
 
@@ -13,7 +13,7 @@ class Collection {
   }
 
   factory Collection.fromJson(Map<String, dynamic> json) {
-    return Collection(json['username'], json['origin'], json['quantity'],
+    return Collection(json['user'], json['origin'], json['quantity'],
         json['quantity2'], json['date']);
   }
 

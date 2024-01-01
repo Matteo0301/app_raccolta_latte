@@ -23,7 +23,7 @@ class CollectionsModel extends ChangeNotifier {
   void add(Collection item) {
     _items.add(item);
     // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
+    //notifyListeners();
   }
 
   void removeAll() {

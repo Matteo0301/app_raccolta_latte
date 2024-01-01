@@ -1,5 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -70,11 +71,8 @@ class AddButton extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pop(
-                        context,
-                        quantityController.text +
-                            ";" +
-                            quantity2Controller.text);
+                    Navigator.pop(context,
+                        '${quantityController.text};${quantity2Controller.text}');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Inserisci un valore')));
@@ -90,8 +88,8 @@ class AddButton extends StatelessWidget {
       return null;
     }
     var tmp = res.split(';');
-    final quantity = double.parse(tmp[0]);
-    final quantity2 = double.parse(tmp[1]);
+    final quantity = int.parse(tmp[0]);
+    final quantity2 = int.parse(tmp[1]);
     return Collection(username, 'origin', quantity, quantity2,
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
   }
@@ -105,7 +103,18 @@ class AddButton extends StatelessWidget {
             Collection? res = await inputPopup(context);
             debugPrint('res2: $res');
             if (res != null) {
-              collections.add(res);
+              await addCollection(
+                res,
+              )
+                  .then((value) =>
+                      {collections.add(res), collections.notifyListeners()})
+                  .catchError((error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())),
+                );
+                collections.notifyListeners();
+                return <dynamic>{};
+              });
             }
             debugPrint('lista: ${collections.items}');
           },

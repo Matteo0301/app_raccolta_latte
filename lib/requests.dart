@@ -200,3 +200,27 @@ Future<List<Collection>> getCollections(
     return Future.error('Impossibile connettersi al server');
   }
 }
+
+Future<void> addCollection(Collection collection) async {
+  try {
+    final response = await http.post(
+        Uri.parse(
+            '$baseUrl/collections/${collection.user}/${collection.origin}'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'quantity': collection.quantity.toString(),
+          'quantity2': collection.quantity2.toString()
+        }));
+    print('Response: ${response.body}');
+    if (response.statusCode != 201) {
+      print('Wrong status code');
+      return Future.error('Errore durante l\'operazione');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return Future.error('Impossibile connettersi al server');
+  }
+}

@@ -22,8 +22,8 @@ class CollectionsList extends StatelessWidget {
           future: getCollections(username, admin, startDate, endDate),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text('${snapshot.error}')));
+              /* ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text('${snapshot.error}'))); */
               return const Center(child: Text('Nessun dato trovato'));
             } else if (snapshot.hasData) {
               List<Collection> list = snapshot.data as List<Collection>;
