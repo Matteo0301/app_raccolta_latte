@@ -59,11 +59,11 @@ class OriginPage extends StatelessWidget {
                 builder: (context, origins, child) {
                   return IconButton(
                       onPressed: () async {
-                        List<Origin> users = [];
+                        List<Origin> o = [];
                         for (var index in origins.selected) {
-                          users.add(origins.items[index]);
+                          o.add(origins.items[index]);
                         }
-                        removeOrigins(users)
+                        removeOrigins(o)
                             .then((value) => {origins.notifyListeners()})
                             .catchError((error) {
                           ScaffoldMessenger.of(context).showSnackBar(
