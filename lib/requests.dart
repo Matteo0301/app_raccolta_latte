@@ -226,11 +226,14 @@ Future<void> addCollection(Collection collection) async {
   }
 }
 
-/* Future<void> removeCollections(List<Collection> collections) async {
+Future<void> removeCollections(List<Collection> collections) async {
   try {
     for (var c in collections) {
-      final response = await http.delete(Uri.parse('$baseUrl/users/${c.name}'),
+      final response = await http.delete(
+          Uri.parse('$baseUrl/collections/${c.id}'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode != 204) {
         return Future.error('Operazione non permessa');
       }
@@ -238,4 +241,4 @@ Future<void> addCollection(Collection collection) async {
   } catch (e) {
     return Future.error('Impossibile connettersi al server');
   }
-} */
+}

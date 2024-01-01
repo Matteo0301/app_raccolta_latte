@@ -1,4 +1,6 @@
 import 'package:app_raccolta_latte/collections/add_button.dart';
+import 'package:app_raccolta_latte/collections/collection.dart';
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/collections/drawer.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
@@ -78,7 +80,20 @@ class HomePage extends StatelessWidget {
                   builder: (context, collections, child) {
                     return IconButton(
                         onPressed: () {
-                          collections.removeSelected();
+                          //collections.removeSelected();
+                          List<Collection> coll = [];
+                          for (var index in collections.selected) {
+                            coll.add(collections.items[index]);
+                          }
+                          removeCollections(coll)
+                              .then((value) => {collections.notifyListeners()})
+                              .catchError((error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error.toString())),
+                            );
+                            collections.notifyListeners();
+                            return <dynamic>{};
+                          });
                         },
                         icon: const Icon(Icons.delete));
                   },
