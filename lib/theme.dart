@@ -24,9 +24,10 @@ class MyTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        primary: mainColor,
-        onPrimary: Colors.white,
-        onSurface: Colors.grey,
+        backgroundColor: mainColor,
+        foregroundColor: Colors.white,
+        disabledBackgroundColor: Colors.grey,
+        disabledForegroundColor: Colors.grey,
         textStyle: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
