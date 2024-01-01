@@ -90,7 +90,7 @@ class AddButton extends StatelessWidget {
     var tmp = res.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
-    return Collection(username, 'origin', quantity, quantity2,
+    return Collection('', username, 'origin', quantity, quantity2,
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
   }
 

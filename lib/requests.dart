@@ -186,6 +186,7 @@ Future<List<Collection>> getCollections(
   try {
     final response = await http.get(Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    print(response.body);
     if (response.statusCode == 200) {
       List<Collection> collections = [];
       for (var user in jsonDecode(response.body)) {
@@ -224,3 +225,17 @@ Future<void> addCollection(Collection collection) async {
     return Future.error('Impossibile connettersi al server');
   }
 }
+
+/* Future<void> removeCollections(List<Collection> collections) async {
+  try {
+    for (var c in collections) {
+      final response = await http.delete(Uri.parse('$baseUrl/users/${c.name}'),
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      if (response.statusCode != 204) {
+        return Future.error('Operazione non permessa');
+      }
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+} */

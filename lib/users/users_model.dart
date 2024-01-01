@@ -3,7 +3,7 @@ import 'package:app_raccolta_latte/users/user.dart';
 import 'package:flutter/material.dart';
 
 class UsersModel extends ChangeNotifier {
-  final List<User> _items = [User('User1', false)];
+  final List<User> _items = [];
   final Set<int> _selected = {};
 
   UnmodifiableListView<User> get items => UnmodifiableListView(_items);

@@ -3,7 +3,7 @@ import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:flutter/material.dart';
 
 class OriginsModel extends ChangeNotifier {
-  final List<Origin> _items = [Origin('Origin1')];
+  final List<Origin> _items = [];
 
   UnmodifiableListView<Origin> get items => UnmodifiableListView(_items);
 

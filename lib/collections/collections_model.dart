@@ -3,18 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/collections/collection.dart';
 
 class CollectionsModel extends ChangeNotifier {
-  final List<Collection> _items = [
-    Collection('user1', 'origin', 1, 0,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}'),
-    Collection('user2', 'origin', 2, 1,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}'),
-    Collection('user3', 'origin', 3, 1,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}'),
-    Collection('user4', 'origin', 4, 3,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}'),
-    Collection('user5', 'origin', 5, 1,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}'),
-  ];
+  final List<Collection> _items = [];
 
   UnmodifiableListView<Collection> get items => UnmodifiableListView(_items);
 
