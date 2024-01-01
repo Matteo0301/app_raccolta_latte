@@ -1,5 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
+import 'package:app_raccolta_latte/collections/origins_dropdown.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ class AddButton extends StatelessWidget {
   AddButton(this.username, {Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String username;
+  String origin = '';
 
   Future<Collection?> inputPopup(BuildContext context) async {
     String? res = await showDialog(
@@ -57,7 +59,12 @@ class AddButton extends StatelessWidget {
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       labelText: 'Seconda'),
-                                ))
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: OriginsDropdown((value) {
+                                  origin = value;
+                                }))
                           ],
                         ))
                   ],
@@ -84,13 +91,14 @@ class AddButton extends StatelessWidget {
           );
         });
     debugPrint('res1: $res');
+    print(origin);
     if (res == null) {
       return null;
     }
     var tmp = res.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
-    return Collection('', username, 'origin', quantity, quantity2,
+    return Collection('', username, origin, quantity, quantity2,
         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
   }
 
