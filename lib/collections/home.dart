@@ -114,7 +114,7 @@ class HomePage extends StatelessWidget {
                       );
                     })),
           body: content,
-          floatingActionButton: AddButton(username),
+          floatingActionButton: AddButton(username: username, admin: admin),
           drawer: drawer),
     );
   }

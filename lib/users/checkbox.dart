@@ -6,10 +6,10 @@ class AdminCheckbox extends StatefulWidget {
   const AdminCheckbox({Key? key, required this.onChanged}) : super(key: key);
 
   @override
-  _AdminCheckboxState createState() => _AdminCheckboxState();
+  AdminCheckboxState createState() => AdminCheckboxState();
 }
 
-class _AdminCheckboxState extends State<AdminCheckbox> {
+class AdminCheckboxState extends State<AdminCheckbox> {
   bool checkboxValue = false;
 
   @override

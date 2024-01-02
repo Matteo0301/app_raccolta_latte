@@ -1,18 +1,23 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
 import 'package:app_raccolta_latte/collections/origins_dropdown.dart';
+import 'package:app_raccolta_latte/date_time_picker.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatelessWidget {
-  AddButton(this.username, {Key? key}) : super(key: key);
+  AddButton({Key? key, required this.username, required this.admin})
+      : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String username;
+  final bool admin;
   String origin = '';
+  DateTime date = DateTime.now();
 
   Future<Collection?> inputPopup(BuildContext context) async {
+    date = DateTime.now();
     String? res = await showDialog(
         context: context,
         builder: (_) {
@@ -66,7 +71,14 @@ class AddButton extends StatelessWidget {
                                   origin = value;
                                 }))
                           ],
-                        ))
+                        )),
+                    DateTimePicker(
+                      date: date,
+                      onChanged: (value) {
+                        date = value;
+                      },
+                      admin: admin,
+                    ),
                   ],
                 )),
             actions: [
@@ -91,15 +103,14 @@ class AddButton extends StatelessWidget {
           );
         });
     debugPrint('res1: $res');
-    print(origin);
+    print(date);
     if (res == null) {
       return null;
     }
     var tmp = res.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
-    return Collection('', username, origin, quantity, quantity2,
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}  ${DateTime.now().hour}:${DateTime.now().minute}');
+    return Collection('', username, origin, quantity, quantity2, date);
   }
 
   @override
@@ -111,9 +122,7 @@ class AddButton extends StatelessWidget {
             Collection? res = await inputPopup(context);
             debugPrint('res2: $res');
             if (res != null) {
-              await addCollection(
-                res,
-              )
+              await addCollection(res, admin)
                   .then((value) =>
                       {collections.add(res), collections.notifyListeners()})
                   .catchError((error) {

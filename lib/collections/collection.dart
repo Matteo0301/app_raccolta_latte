@@ -2,7 +2,7 @@ class Collection {
   final String user;
   final String origin;
   final int quantity;
-  final String date;
+  final DateTime date;
   final int quantity2;
   final String id;
 
@@ -16,7 +16,7 @@ class Collection {
 
   factory Collection.fromJson(Map<String, dynamic> json) {
     return Collection(json['_id'], json['user'], json['origin'],
-        json['quantity'], json['quantity2'], json['date']);
+        json['quantity'], json['quantity2'], DateTime.parse(json['date']));
   }
 
   String toJson() {

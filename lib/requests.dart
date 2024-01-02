@@ -181,7 +181,7 @@ Future<List<Collection>> getCollections(
   if (admin) {
     url = '$baseUrl/collections/$startDate/$endDate';
   } else {
-    url = '$baseUrl/collections/$username/$startDate/$endDate';
+    url = '$baseUrl/collections/byuser/$username/$startDate/$endDate';
   }
   try {
     final response = await http.get(Uri.parse(url),
@@ -202,7 +202,14 @@ Future<List<Collection>> getCollections(
   }
 }
 
-Future<void> addCollection(Collection collection) async {
+Future<void> addCollection(Collection collection, bool admin) async {
+  final Map<String, String> body = <String, String>{
+    'quantity': collection.quantity.toString(),
+    'quantity2': collection.quantity2.toString()
+  };
+  if (admin) {
+    body['date'] = collection.date.toIso8601String();
+  }
   try {
     final response = await http.post(
         Uri.parse(
@@ -211,10 +218,7 @@ Future<void> addCollection(Collection collection) async {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(<String, String>{
-          'quantity': collection.quantity.toString(),
-          'quantity2': collection.quantity2.toString()
-        }));
+        body: jsonEncode(body));
     print('Response: ${response.body}');
     if (response.statusCode != 201) {
       print('Wrong status code');
