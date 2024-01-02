@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyTheme {
-  static const Color mainColor = Color.fromRGBO(22, 44, 243, 1);
+  static const Color mainColor = Color.fromRGBO(57, 70, 187, 1);
   static Map<int, Color> color = {
     50: const Color.fromRGBO(22, 44, 243, .1),
     100: const Color.fromRGBO(22, 44, 243, .2),
@@ -16,27 +16,11 @@ class MyTheme {
   };
   static MaterialColor colorCustom = MaterialColor(0xFF162CF3, color);
   final theme = ThemeData(
-    colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: colorCustom,
-      accentColor: mainColor,
-      cardColor: mainColor,
-      brightness: Brightness.dark,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: mainColor,
-        foregroundColor: Colors.white,
-        disabledBackgroundColor: Colors.grey,
-        disabledForegroundColor: Colors.grey,
-        textStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        minimumSize: const Size(200, 50),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: mainColor, background: Color.fromARGB(255, 119, 119, 119)),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: mainColor,
+      foregroundColor: Colors.black,
     ),
   );
 }
