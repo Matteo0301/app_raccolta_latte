@@ -32,7 +32,7 @@ Future<LoggedUser> loginRequest(username, password) async {
       try {
         return await http
             .get(Uri.parse('$baseUrl/users/auth/$username/$password'))
-            .timeout(const Duration(seconds: 10));
+            .timeout(const Duration(seconds: 1));
       } catch (e) {
         return null;
       }
