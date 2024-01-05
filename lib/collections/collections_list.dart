@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CollectionsList extends StatelessWidget {
-  const CollectionsList(this.username, this.admin, {Key? key})
+  const CollectionsList(this.username, this.admin, this.date, {Key? key})
       : super(key: key);
   final String username;
   final bool admin;
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    DateTime start = now.subtract(const Duration(days: 100));
-    String endDate = now.toIso8601String();
+    DateTime start = date.subtract(const Duration(days: 30));
+    String endDate = date.toIso8601String();
     String startDate = start.toIso8601String();
     return Consumer<CollectionsModel>(
       builder: (context, collections, child) {

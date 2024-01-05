@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage(
       {Key? key,
       required this.title,
@@ -38,6 +38,13 @@ class HomePage extends StatelessWidget {
   final String title;
   final String username;
   final bool admin;
+
+  @override
+  State<StatefulWidget> createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +58,30 @@ class HomePage extends StatelessWidget {
           Expanded(
             flex: 1,
             child: AppMenu(
-              username: username,
-              admin: admin,
+              username: widget.username,
+              admin: widget.admin,
             ),
           ),
-          Expanded(flex: 3, child: CollectionsList(username, admin)),
+          Expanded(
+              flex: 3,
+              child: CollectionsList(widget.username, widget.admin, date)),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = CollectionsList(username, admin);
+      content = CollectionsList(widget.username, widget.admin, date);
       drawer = Drawer(
           child: AppMenu(
-        username: username,
-        admin: admin,
+        username: widget.username,
+        admin: widget.admin,
       ));
     }
     return ChangeNotifierProvider(
       create: (context) => CollectionsModel(),
       child: Scaffold(
           appBar: AppBar(
-              title: Text(title),
+              title: Text(widget.title),
               centerTitle: true,
               automaticallyImplyLeading: false,
               actions: [
@@ -98,6 +107,26 @@ class HomePage extends StatelessWidget {
                         icon: const Icon(Icons.delete));
                   },
                 ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        date = date.add(const Duration(days: 30));
+                        if (date.isAfter(DateTime.now())) {
+                          date = DateTime.now();
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_back_ios)),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        date = date.subtract(const Duration(days: 30));
+                        if (date.isBefore(DateTime(2021, 1, 1))) {
+                          date = DateTime(2021, 1, 1);
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_forward_ios)),
               ],
               leading: !leading
                   ? null
@@ -112,7 +141,8 @@ class HomePage extends StatelessWidget {
                       );
                     })),
           body: content,
-          floatingActionButton: AddButton(username: username, admin: admin),
+          floatingActionButton:
+              AddButton(username: widget.username, admin: widget.admin),
           drawer: drawer),
     );
   }
