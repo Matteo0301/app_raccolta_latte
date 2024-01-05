@@ -98,8 +98,6 @@ class HomePage extends StatelessWidget {
                         icon: const Icon(Icons.delete));
                   },
                 ),
-                // TODO this is here only to resolve a bug, should be removed when ready
-                IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
               ],
               leading: !leading
                   ? null
