@@ -38,7 +38,6 @@ Future<LoggedUser> loginRequest(username, password) async {
       }
     }, (error, stack) {
       print('Impossibile connettersi al server');
-      //throw 'Impossibile connettersi al server';
     });
     if (response == null) {
       return Future.error('Impossibile connettersi al server');

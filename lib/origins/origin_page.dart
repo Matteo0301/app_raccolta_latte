@@ -57,23 +57,27 @@ class OriginPage extends StatelessWidget {
             actions: [
               Consumer<OriginsModel>(
                 builder: (context, origins, child) {
-                  return IconButton(
-                      onPressed: () async {
-                        List<Origin> o = [];
-                        for (var index in origins.selected) {
-                          o.add(origins.items[index]);
-                        }
-                        removeOrigins(o)
-                            .then((value) => {origins.notifyListeners()})
-                            .catchError((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          );
-                          origins.notifyListeners();
-                          return <dynamic>{};
-                        });
-                      },
-                      icon: const Icon(Icons.delete));
+                  if (origins.selected.isEmpty) {
+                    return const SizedBox.shrink();
+                  } else {
+                    return IconButton(
+                        onPressed: () async {
+                          List<Origin> o = [];
+                          for (var index in origins.selected) {
+                            o.add(origins.items[index]);
+                          }
+                          removeOrigins(o)
+                              .then((value) => {origins.notifyListeners()})
+                              .catchError((error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error.toString())),
+                            );
+                            origins.notifyListeners();
+                            return <dynamic>{};
+                          });
+                        },
+                        icon: const Icon(Icons.delete));
+                  }
                 },
               ),
             ],

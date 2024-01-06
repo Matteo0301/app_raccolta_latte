@@ -87,24 +87,29 @@ class HomePageState extends State<HomePage> {
               actions: [
                 Consumer<CollectionsModel>(
                   builder: (context, collections, child) {
-                    return IconButton(
-                        onPressed: () {
-                          //collections.removeSelected();
-                          List<Collection> coll = [];
-                          for (var index in collections.selected) {
-                            coll.add(collections.items[index]);
-                          }
-                          removeCollections(coll)
-                              .then((value) => {collections.notifyListeners()})
-                              .catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(error.toString())),
-                            );
-                            collections.notifyListeners();
-                            return <dynamic>{};
-                          });
-                        },
-                        icon: const Icon(Icons.delete));
+                    if (collections.selected.isEmpty) {
+                      return const SizedBox.shrink();
+                    } else {
+                      return IconButton(
+                          onPressed: () {
+                            //collections.removeSelected();
+                            List<Collection> coll = [];
+                            for (var index in collections.selected) {
+                              coll.add(collections.items[index]);
+                            }
+                            removeCollections(coll)
+                                .then(
+                                    (value) => {collections.notifyListeners()})
+                                .catchError((error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(error.toString())),
+                              );
+                              collections.notifyListeners();
+                              return <dynamic>{};
+                            });
+                          },
+                          icon: const Icon(Icons.delete));
+                    }
                   },
                 ),
                 IconButton(

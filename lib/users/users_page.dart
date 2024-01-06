@@ -57,23 +57,27 @@ class UsersPage extends StatelessWidget {
             actions: [
               Consumer<UsersModel>(
                 builder: (context, u, child) {
-                  return IconButton(
-                      onPressed: () async {
-                        List<User> users = [];
-                        for (var index in u.selected) {
-                          users.add(u.items[index]);
-                        }
-                        removeUsers(users)
-                            .then((value) => {u.notifyListeners()})
-                            .catchError((error) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          );
-                          u.notifyListeners();
-                          return <dynamic>{};
-                        });
-                      },
-                      icon: const Icon(Icons.delete));
+                  if (u.selected.isEmpty) {
+                    return const SizedBox.shrink();
+                  } else {
+                    return IconButton(
+                        onPressed: () async {
+                          List<User> users = [];
+                          for (var index in u.selected) {
+                            users.add(u.items[index]);
+                          }
+                          removeUsers(users)
+                              .then((value) => {u.notifyListeners()})
+                              .catchError((error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error.toString())),
+                            );
+                            u.notifyListeners();
+                            return <dynamic>{};
+                          });
+                        },
+                        icon: const Icon(Icons.delete));
+                  }
                 },
               ),
             ],
