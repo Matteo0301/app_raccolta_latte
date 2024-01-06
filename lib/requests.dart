@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
+import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:tuple/tuple.dart';
 
 const String baseUrl = 'http://localhost:3000';
 String token = '';
@@ -110,11 +112,11 @@ Future<void> addUser(User user, String pass) async {
 
 Future<List<Origin>> getOrigins() async {
   try {
-    print(Uri.parse('$baseUrl/origins'));
+    debugPrint(Uri.encodeFull('$baseUrl/origins'));
     final response = await http.get(Uri.parse('$baseUrl/origins'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode.toString());
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       List<Origin> origins = [];
       for (var user in jsonDecode(response.body)) {
@@ -133,9 +135,10 @@ Future<void> removeOrigins(List<Origin> origins) async {
   try {
     for (var o in origins) {
       print('$baseUrl/origins/${o.name}');
-      final response = await http.delete(Uri.parse('$baseUrl/users/${o.name}'),
+      final response = await http.delete(
+          Uri.parse('$baseUrl/origins/${o.name}'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
-      if (response.statusCode != 204) {
+      if (response.statusCode != 201) {
         return Future.error('Operazione non permessa');
       }
     }
@@ -147,7 +150,8 @@ Future<void> removeOrigins(List<Origin> origins) async {
 Future<void> addOrigin(Origin origin) async {
   try {
     final response = await http.post(
-        Uri.parse('$baseUrl/origins/${origin.name}'),
+        Uri.parse(
+            '$baseUrl/origins/${origin.name}/${origin.lat}/${origin.lng}'),
         headers: {'Authorization': 'Bearer $token'});
     print('Response: ${response.body}');
     if (response.statusCode != 201) {
@@ -227,5 +231,28 @@ Future<void> removeCollections(List<Collection> collections) async {
     }
   } catch (e) {
     return Future.error('Impossibile connettersi al server');
+  }
+}
+
+Future<Tuple2<double, double>> address2Coordinates(String address) async {
+  final String url =
+      'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeFull(address)}&key=AIzaSyAUCp-oxH6E-0Vb31QVecPX5-a0JQuOzno';
+  try {
+    final response = await http.get(Uri.parse(url));
+    print(response.body);
+    if (response.statusCode == 200) {
+      var res = jsonDecode(response.body);
+      if (res['status'] == 'OK') {
+        var lat = res['results'][0]['geometry']['location']['lat'];
+        var lng = res['results'][0]['geometry']['location']['lng'];
+        return Tuple2(lat, lng);
+      } else {
+        return Future.error('Indirizzo non trovato');
+      }
+    } else {
+      return Future.error('Errore durante l\'operazione');
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi');
   }
 }

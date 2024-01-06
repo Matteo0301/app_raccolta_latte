@@ -5,7 +5,7 @@ import 'package:app_raccolta_latte/collections/home.dart';
 import 'package:app_raccolta_latte/requests.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key, required this.title}) : super(key: key);
+  const Login({super.key, required this.title});
   final String title;
 
   @override

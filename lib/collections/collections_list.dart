@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CollectionsList extends StatelessWidget {
-  const CollectionsList(this.username, this.admin, this.date, {Key? key})
-      : super(key: key);
+  const CollectionsList(this.username, this.admin, this.date, {super.key});
   final String username;
   final bool admin;
   final DateTime date;

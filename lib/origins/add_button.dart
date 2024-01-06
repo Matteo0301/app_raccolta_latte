@@ -13,6 +13,7 @@ class AddButton extends StatelessWidget {
         context: context,
         builder: (_) {
           var nameController = TextEditingController();
+          var addressController = TextEditingController();
           return AlertDialog(
             title: const Text('Inserisci'),
             content: Container(
@@ -23,14 +24,27 @@ class AddButton extends StatelessWidget {
                   children: [
                     Form(
                         key: _formKey,
-                        child: TextFormField(
-                          controller: nameController,
-                          validator: (value) => value!.isEmpty
-                              ? 'Inserisci il nuovo conferente'
-                              : null,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(), labelText: 'Nome'),
-                        ))
+                        child: Column(children: [
+                          TextFormField(
+                            controller: nameController,
+                            validator: (value) => value!.isEmpty
+                                ? 'Inserisci il nuovo conferente'
+                                : null,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Nome'),
+                          ),
+                          TextFormField(
+                            controller: addressController,
+                            validator: (value) => value!.isEmpty
+                                ? 'Inserisci l\'indirizzo'
+                                : null,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Via Roma 1, Pegognaga',
+                                labelText: 'Indirizzo'),
+                          )
+                        ]))
                   ],
                 )),
             actions: [
@@ -42,7 +56,8 @@ class AddButton extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pop(context, nameController.text);
+                    Navigator.pop(context,
+                        '${nameController.text};${addressController.text}}');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Inserisci un valore')));
@@ -53,10 +68,17 @@ class AddButton extends StatelessWidget {
             ],
           );
         });
+    debugPrint('res: $res');
+    final tmp = res?.split(';');
+    if (tmp == null) {
+      return null;
+    }
+    final coordinates = await address2Coordinates(tmp[1]);
+    print(coordinates);
     if (res == null) {
       return null;
     }
-    return Origin(res);
+    return Origin(tmp[0], coordinates.item1, coordinates.item2);
   }
 
   @override
@@ -78,7 +100,6 @@ class AddButton extends StatelessWidget {
                 collections.notifyListeners();
                 return <dynamic>{};
               });
-              //collections.add(res);
             }
             debugPrint('lista: ${collections.items}');
           },

@@ -1,10 +1,54 @@
+import 'dart:io';
+
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class OriginsDropdown extends StatelessWidget {
-  const OriginsDropdown(this.onChanged, {Key? key}) : super(key: key);
+  const OriginsDropdown(this.onChanged, {super.key});
   final ValueSetter<String> onChanged;
+
+  Future<LocationData?> getLocation() async {
+    if (!kIsWeb && !Platform.isAndroid) return null;
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return null;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    locationData = await location.getLocation();
+    print(locationData);
+    return locationData;
+  }
+
+  getSortedOrigins() async {
+    final location;
+    location = await getLocation();
+    final origins = await getOrigins();
+    if (location != null) {
+      origins
+          .sort((a, b) => a.distance(location).compareTo(b.distance(location)));
+    }
+    return origins;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +58,7 @@ class OriginsDropdown extends StatelessWidget {
         child: Text('Conferente: '),
       ),
       FutureBuilder(
-        future: getOrigins(),
+        future: getSortedOrigins(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text('Nessun dato trovato'));
