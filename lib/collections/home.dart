@@ -92,7 +92,6 @@ class HomePageState extends State<HomePage> {
                     } else {
                       return IconButton(
                           onPressed: () {
-                            //collections.removeSelected();
                             List<Collection> coll = [];
                             for (var index in collections.selected) {
                               coll.add(collections.items[index]);

@@ -52,20 +52,6 @@ Future<LoggedUser> loginRequest(username, password) async {
   }
 }
 
-/* Future<LoggedUser> loginRequest(username, password) async => 
-runZonedGuarded<Future<Response?>>(() async {
-      return await client.post(path,
-          data: json.encode(parameter),
-          options: Options(
-            headers: headers
-              ..addAll(<String, String>{
-                'Authorization': await localData.read(accessTokenName) ?? ''
-              }),
-          ));
-    }, (error, stack) {
-      throw Exception('SERVER DOWN');
-    }); */
-
 Future<List<User>> getUsers() async {
   try {
     final response = await http.get(Uri.parse('$baseUrl/users'),
@@ -204,11 +190,9 @@ Future<List<Collection>> getCollections(
 Future<void> addCollection(Collection collection, bool admin) async {
   final Map<String, String> body = <String, String>{
     'quantity': collection.quantity.toString(),
-    'quantity2': collection.quantity2.toString()
+    'quantity2': collection.quantity2.toString(),
+    'date': collection.date.toIso8601String()
   };
-  if (admin) {
-    body['date'] = collection.date.toIso8601String();
-  }
   try {
     final response = await http.post(
         Uri.parse(
