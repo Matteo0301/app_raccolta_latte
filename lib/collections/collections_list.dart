@@ -12,8 +12,9 @@ class CollectionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime start = date.subtract(const Duration(days: 30));
-    String endDate = date.toIso8601String();
+    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
+    DateTime start = end.copyWith(day: 0, hour: 12);
+    String endDate = end.toIso8601String();
     String startDate = start.toIso8601String();
     return Consumer<CollectionsModel>(
       builder: (context, collections, child) {
