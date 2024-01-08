@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatelessWidget {
-  AddButton({Key? key}) : super(key: key);
+  AddButton({super.key});
   final _formKey = GlobalKey<FormState>();
 
   Future<Origin?> inputPopup(BuildContext context) async {

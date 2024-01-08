@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
-  DateTimePicker(
-      {Key? key,
+  const DateTimePicker(
+      {super.key,
       required this.date,
       required this.onChanged,
-      required this.admin})
-      : super(key: key);
-  DateTime date;
+      required this.admin});
+  final DateTime date;
   final ValueSetter<DateTime> onChanged;
   final bool admin;
 
   @override
-  DateTimePickerState createState() => DateTimePickerState();
+  // ignore: no_logic_in_create_state
+  DateTimePickerState createState() => DateTimePickerState(date);
 }
 
 class DateTimePickerState extends State<DateTimePicker> {
+  DateTime date;
+  DateTimePickerState(this.date);
   void selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: widget.date,
+        initialDate: date,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime.now(),
-        currentDate: widget.date);
+        currentDate: date);
     print(picked);
 
     if (picked != null) {
       setState(() {
-        widget.date = widget.date
-            .copyWith(year: picked.year, month: picked.month, day: picked.day);
-        widget.onChanged(widget.date);
+        date = date.copyWith(
+            year: picked.year, month: picked.month, day: picked.day);
+        widget.onChanged(date);
       });
     }
   }
@@ -37,15 +39,13 @@ class DateTimePickerState extends State<DateTimePicker> {
   void selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
         context: context,
-        initialTime:
-            TimeOfDay(hour: widget.date.hour, minute: widget.date.minute));
+        initialTime: TimeOfDay(hour: date.hour, minute: date.minute));
     print(picked);
 
     if (picked != null) {
       setState(() {
-        widget.date =
-            widget.date.copyWith(hour: picked.hour, minute: picked.minute);
-        widget.onChanged(widget.date);
+        date = date.copyWith(hour: picked.hour, minute: picked.minute);
+        widget.onChanged(date);
       });
     }
   }
@@ -63,8 +63,7 @@ class DateTimePickerState extends State<DateTimePicker> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    '${widget.date.day}/${widget.date.month}/${widget.date.year}'),
+                child: Text('${date.day}/${date.month}/${date.year}'),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -82,7 +81,7 @@ class DateTimePickerState extends State<DateTimePicker> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('${widget.date.hour}:${widget.date.minute}'),
+                child: Text('${date.hour}:${date.minute}'),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -105,8 +104,7 @@ class DateTimePickerState extends State<DateTimePicker> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    '${widget.date.day}/${widget.date.month}/${widget.date.year}'),
+                child: Text('${date.day}/${date.month}/${date.year}'),
               ),
             ],
           ),
@@ -118,7 +116,7 @@ class DateTimePickerState extends State<DateTimePicker> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('${widget.date.hour}:${widget.date.minute}'),
+                child: Text('${date.hour}:${date.minute}'),
               ),
             ],
           ),

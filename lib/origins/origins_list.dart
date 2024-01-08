@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OriginsList extends StatelessWidget {
-  const OriginsList({Key? key}) : super(key: key);
+  const OriginsList({super.key});
 
   @override
   Widget build(BuildContext context) {

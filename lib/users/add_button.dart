@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'user.dart';
 
 class AddButton extends StatefulWidget {
-  const AddButton({Key? key}) : super(key: key);
+  const AddButton({super.key});
 
   @override
   State<StatefulWidget> createState() {

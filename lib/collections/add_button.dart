@@ -8,8 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatelessWidget {
-  AddButton({Key? key, required this.username, required this.admin})
-      : super(key: key);
+  AddButton({super.key, required this.username, required this.admin});
   final _formKey = GlobalKey<FormState>();
   final String username;
   final bool admin;

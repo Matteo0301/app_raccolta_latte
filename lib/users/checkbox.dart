@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AdminCheckbox extends StatefulWidget {
   final void Function(bool) onChanged;
 
-  const AdminCheckbox({Key? key, required this.onChanged}) : super(key: key);
+  const AdminCheckbox({super.key, required this.onChanged});
 
   @override
   AdminCheckboxState createState() => AdminCheckboxState();

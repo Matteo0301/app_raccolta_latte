@@ -9,11 +9,10 @@ import 'drawer.dart';
 
 class UsersPage extends StatelessWidget {
   const UsersPage(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.username,
-      required this.admin})
-      : super(key: key);
+      required this.admin});
   final String title;
   final String username;
   final bool admin;

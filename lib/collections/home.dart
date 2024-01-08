@@ -9,11 +9,10 @@ import 'package:app_raccolta_latte/collections/collections_model.dart';
 
 class Home extends StatelessWidget {
   const Home(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.username,
-      required this.admin})
-      : super(key: key);
+      required this.admin});
   final String title;
   final String username;
   final bool admin;
@@ -29,11 +28,10 @@ class Home extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   const HomePage(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.username,
-      required this.admin})
-      : super(key: key);
+      required this.admin});
 
   final String title;
   final String username;
