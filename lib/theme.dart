@@ -16,8 +16,7 @@ class MyTheme {
   };
   static MaterialColor colorCustom = MaterialColor(0xFF162CF3, color);
   final theme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-        seedColor: mainColor, background: Colors.grey, primary: mainColor),
+    colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
     appBarTheme: const AppBarTheme(
       backgroundColor: mainColor,
       foregroundColor: Colors.black,

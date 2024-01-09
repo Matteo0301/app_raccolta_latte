@@ -90,17 +90,14 @@ class DropdownState extends State<OriginsDropdownHelper> {
   Widget build(BuildContext context) {
     if (widget.origins.isEmpty) return const Text('Nessun dato trovato');
     if (selected == '') selected = widget.origins[0].name;
-    widget.onChanged(selected);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: DropdownButton<String>(
         value: selected,
         iconSize: 24,
         elevation: 16,
-        //style: const TextStyle(color: Colors.deepPurple),
         underline: Container(
           height: 2,
-          //color: Colors.deepPurpleAccent,
         ),
         onChanged: (value) {
           setState(() {

@@ -1,25 +1,22 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
-import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CollectionsList extends StatelessWidget {
-  const CollectionsList(this.username, this.admin, this.date, {super.key});
+  const CollectionsList(this.username, this.admin, this.date, this.request,
+      {super.key});
   final String username;
   final bool admin;
   final DateTime date;
+  final ValueGetter<Future<List<Collection>>> request;
 
   @override
   Widget build(BuildContext context) {
-    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
-    DateTime start = end.copyWith(day: 0, hour: 12);
-    String endDate = end.toIso8601String();
-    String startDate = start.toIso8601String();
     return Consumer<CollectionsModel>(
       builder: (context, collections, child) {
         return FutureBuilder(
-          future: getCollections(username, admin, startDate, endDate),
+          future: request(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(child: Text('Nessun dato trovato'));

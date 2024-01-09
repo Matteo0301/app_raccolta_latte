@@ -47,6 +47,15 @@ class HomePageState extends State<HomePage> {
   DateTime date = DateTime.now()
       .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
 
+  Future<List<Collection>> getCollectionList() async {
+    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
+    DateTime start = end.copyWith(day: 0, hour: 12);
+    String endDate = end.toIso8601String();
+    String startDate = start.toIso8601String();
+    return await getCollections(
+        widget.username, widget.admin, startDate, endDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -66,13 +75,15 @@ class HomePageState extends State<HomePage> {
           ),
           Expanded(
               flex: 3,
-              child: CollectionsList(widget.username, widget.admin, date)),
+              child: CollectionsList(
+                  widget.username, widget.admin, date, getCollectionList)),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = CollectionsList(widget.username, widget.admin, date);
+      content = CollectionsList(
+          widget.username, widget.admin, date, getCollectionList);
       drawer = Drawer(
           child: AppMenu(
         username: widget.username,
@@ -85,7 +96,7 @@ class HomePageState extends State<HomePage> {
       child: Scaffold(
           appBar: AppBar(
               title: Text(
-                  '${widget.title} Mese: ${date.month.toString().padLeft(2, "0")}/${date.year}'),
+                  '${widget.title} mese: ${date.month.toString().padLeft(2, "0")}/${date.year}'),
               centerTitle: true,
               automaticallyImplyLeading: false,
               actions: [

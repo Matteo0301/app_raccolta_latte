@@ -19,7 +19,7 @@ class AppMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final Widget origins;
     final Widget users;
-    final Widget collections_by_origin;
+    final Widget collectionsByOrigin;
     const empty = SizedBox.shrink();
 
     final children = [
@@ -40,7 +40,7 @@ class AppMenu extends StatelessWidget {
         title: const Text('Home'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Home(title: '', username: username, admin: admin);
+            return Home(title: 'Raccolte', username: username, admin: admin);
           }));
         },
       )
@@ -51,7 +51,8 @@ class AppMenu extends StatelessWidget {
         title: const Text('Conferenti'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return OriginPage(title: '', username: username, admin: admin);
+            return OriginPage(
+                title: 'Conferenti', username: username, admin: admin);
           }));
         },
       );
@@ -59,28 +60,30 @@ class AppMenu extends StatelessWidget {
         title: const Text('Utenti'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return UsersPage(title: '', username: username, admin: admin);
+            return UsersPage(title: 'Utenti', username: username, admin: admin);
           }));
         },
       );
-      collections_by_origin = ListTile(
+      collectionsByOrigin = ListTile(
         title: const Text('Raccolte per conferente'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CollectionsByOrigin(
-                title: '', username: username, admin: admin);
+                title: 'Raccolte per conferente',
+                username: username,
+                admin: admin);
           }));
         },
       );
     } else {
       origins = empty;
       users = empty;
-      collections_by_origin = empty;
+      collectionsByOrigin = empty;
     }
 
     children.add(origins);
     children.add(users);
-    children.add(collections_by_origin);
+    children.add(collectionsByOrigin);
 
     for (var child in children) {
       if (child.runtimeType == ListTile &&

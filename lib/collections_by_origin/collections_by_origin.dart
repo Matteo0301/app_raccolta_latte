@@ -1,12 +1,14 @@
+import 'package:app_raccolta_latte/collections/collection.dart';
+import 'package:app_raccolta_latte/collections/collections_list.dart';
+import 'package:app_raccolta_latte/collections/collections_model.dart';
+import 'package:app_raccolta_latte/collections/origins_dropdown.dart';
 import 'package:app_raccolta_latte/drawer.dart';
-import 'package:app_raccolta_latte/origins/origin.dart';
-import 'package:app_raccolta_latte/origins/origins_list.dart';
-import 'package:app_raccolta_latte/origins/origins_model.dart';
+
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CollectionsByOrigin extends StatelessWidget {
+class CollectionsByOrigin extends StatefulWidget {
   const CollectionsByOrigin(
       {super.key,
       required this.title,
@@ -15,6 +17,32 @@ class CollectionsByOrigin extends StatelessWidget {
   final String title;
   final String username;
   final bool admin;
+
+  @override
+  State<StatefulWidget> createState() => CollectionsByOriginState();
+}
+
+class CollectionsByOriginState extends State<CollectionsByOrigin> {
+  DateTime date = DateTime.now()
+      .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
+
+  String origin = '';
+
+  void setOrigin(value) {
+    setState(() {
+      origin = value;
+    });
+  }
+
+  Future<List<Collection>> getCollectionList() async {
+    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
+    DateTime start = end.copyWith(day: 0, hour: 12);
+    String endDate = end.toIso8601String();
+    String startDate = start.toIso8601String();
+    return await getCollections(
+        widget.username, widget.admin, startDate, endDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content;
@@ -27,75 +55,89 @@ class CollectionsByOrigin extends StatelessWidget {
           Expanded(
             flex: 1,
             child: AppMenu(
-              username: username,
-              admin: admin,
-              current: 'Raccolte per conferente',
+              username: widget.username,
+              admin: widget.admin,
+              current: 'Home',
             ),
           ),
-          const Expanded(flex: 3, child: OriginsList()),
+          Expanded(
+              flex: 3,
+              child: Column(children: [
+                DefaultTextStyle(
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20),
+                  child: Expanded(flex: 1, child: OriginsDropdown(setOrigin)),
+                ),
+                /* Expanded(flex: 1, child: OriginsDropdown(setOrigin)), */
+                Expanded(
+                    flex: 15,
+                    child: CollectionsList(
+                        widget.username, widget.admin, date, getCollectionList))
+              ])),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = const OriginsList();
+      content = CollectionsList(
+          widget.username, widget.admin, date, getCollectionList);
       drawer = Drawer(
           child: AppMenu(
-        username: username,
-        admin: admin,
-        current: 'Raccolte per conferente',
+        username: widget.username,
+        admin: widget.admin,
+        current: 'Home',
       ));
     }
-
     return ChangeNotifierProvider(
-      create: (context) => OriginsModel(),
+      create: (context) => CollectionsModel(),
       child: Scaffold(
-        appBar: AppBar(
-            title: Text(title),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            actions: [
-              Consumer<OriginsModel>(
-                builder: (context, origins, child) {
-                  if (origins.selected.isEmpty) {
-                    return const SizedBox.shrink();
-                  } else {
-                    return IconButton(
-                        onPressed: () async {
-                          List<Origin> o = [];
-                          for (var index in origins.selected) {
-                            o.add(origins.items[index]);
-                          }
-                          removeOrigins(o)
-                              .then((value) => {origins.notifyListeners()})
-                              .catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(error.toString())),
-                            );
-                            origins.notifyListeners();
-                            return <dynamic>{};
-                          });
-                        },
-                        icon: const Icon(Icons.delete));
-                  }
-                },
-              ),
-            ],
-            leading: !leading
-                ? null
-                : Builder(builder: (context) {
-                    return IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        if (leading) {
-                          Scaffold.of(context).openDrawer();
+          appBar: AppBar(
+              title: Text(
+                  '${widget.title} Mese: ${date.month.toString().padLeft(2, "0")}/${date.year}'),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        date = date.copyWith(
+                            month: date.month + 2, day: 0, hour: 12);
+                        if (date.isAfter(DateTime.now())) {
+                          date = DateTime.now().copyWith(
+                              month: DateTime.now().month + 1,
+                              day: 0,
+                              hour: 12);
                         }
-                      },
-                    );
-                  })),
-        body: content,
-        drawer: drawer,
-      ),
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_back_ios)),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        date = date.copyWith(day: 0, hour: 12);
+                        if (date.isBefore(DateTime(2021, 1, 1))) {
+                          date = DateTime(2021, 1, 1);
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.arrow_forward_ios)),
+              ],
+              leading: !leading
+                  ? null
+                  : Builder(builder: (context) {
+                      return IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          if (leading) {
+                            Scaffold.of(context).openDrawer();
+                          }
+                        },
+                      );
+                    })),
+          body: content,
+          drawer: drawer),
     );
   }
 }
