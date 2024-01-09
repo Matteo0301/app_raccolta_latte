@@ -5,10 +5,9 @@ import 'package:app_raccolta_latte/origins/origins_model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'add_button.dart';
 
-class OriginPage extends StatelessWidget {
-  const OriginPage(
+class CollectionsByOrigin extends StatelessWidget {
+  const CollectionsByOrigin(
       {super.key,
       required this.title,
       required this.username,
@@ -30,7 +29,7 @@ class OriginPage extends StatelessWidget {
             child: AppMenu(
               username: username,
               admin: admin,
-              current: 'Conferenti',
+              current: 'Raccolte per conferente',
             ),
           ),
           const Expanded(flex: 3, child: OriginsList()),
@@ -44,7 +43,7 @@ class OriginPage extends StatelessWidget {
           child: AppMenu(
         username: username,
         admin: admin,
-        current: 'Conferenti',
+        current: 'Raccolte per conferente',
       ));
     }
 
@@ -96,7 +95,6 @@ class OriginPage extends StatelessWidget {
                   })),
         body: content,
         drawer: drawer,
-        floatingActionButton: AddButton(),
       ),
     );
   }

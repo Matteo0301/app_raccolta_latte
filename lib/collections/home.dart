@@ -2,10 +2,12 @@ import 'package:app_raccolta_latte/collections/add_button.dart';
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
-import 'package:app_raccolta_latte/collections/drawer.dart';
+//import 'package:app_raccolta_latte/collections/drawer.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
 import 'package:provider/provider.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
+
+import '../drawer.dart';
 
 class Home extends StatelessWidget {
   const Home(
@@ -59,6 +61,7 @@ class HomePageState extends State<HomePage> {
             child: AppMenu(
               username: widget.username,
               admin: widget.admin,
+              current: 'Home',
             ),
           ),
           Expanded(
@@ -74,6 +77,7 @@ class HomePageState extends State<HomePage> {
           child: AppMenu(
         username: widget.username,
         admin: widget.admin,
+        current: 'Home',
       ));
     }
     return ChangeNotifierProvider(
