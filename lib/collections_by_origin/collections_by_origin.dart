@@ -27,6 +27,7 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
       .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
 
   String origin = 'Tutti';
+  int total = 0;
 
   void setOrigin(value) {
     setState(() {
