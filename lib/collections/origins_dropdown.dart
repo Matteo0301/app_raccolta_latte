@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class OriginsDropdown extends StatelessWidget {
-  const OriginsDropdown(this.onChanged, {super.key});
+  const OriginsDropdown(this.onChanged,
+      {super.key, this.includeSelectAll = false});
   final ValueSetter<String> onChanged;
+  final bool includeSelectAll;
 
   Future<LocationData?> getLocation() async {
     if (!kIsWeb && !Platform.isAndroid) return null;
@@ -64,7 +66,7 @@ class OriginsDropdown extends StatelessWidget {
             return const Center(child: Text('Nessun dato trovato'));
           } else if (snapshot.hasData) {
             List<Origin> list = snapshot.data as List<Origin>;
-            return OriginsDropdownHelper(list, onChanged);
+            return OriginsDropdownHelper(list, onChanged, includeSelectAll);
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -75,9 +77,12 @@ class OriginsDropdown extends StatelessWidget {
 }
 
 class OriginsDropdownHelper extends StatefulWidget {
-  const OriginsDropdownHelper(this.origins, this.onChanged, {super.key});
+  const OriginsDropdownHelper(
+      this.origins, this.onChanged, this.includeSelectAll,
+      {super.key});
   final List<Origin> origins;
   final ValueSetter<String> onChanged;
+  final bool includeSelectAll;
 
   @override
   State<StatefulWidget> createState() => DropdownState();
@@ -89,6 +94,9 @@ class DropdownState extends State<OriginsDropdownHelper> {
   @override
   Widget build(BuildContext context) {
     if (widget.origins.isEmpty) return const Text('Nessun dato trovato');
+    if (widget.includeSelectAll && widget.origins[0].name != 'Tutti') {
+      widget.origins.insert(0, Origin('Tutti', 0, 0));
+    }
     if (selected == '') selected = widget.origins[0].name;
     return Padding(
       padding: const EdgeInsets.all(8.0),

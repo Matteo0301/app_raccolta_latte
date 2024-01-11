@@ -26,7 +26,7 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
   DateTime date = DateTime.now()
       .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
 
-  String origin = '';
+  String origin = 'Tutti';
 
   void setOrigin(value) {
     setState(() {
@@ -39,8 +39,12 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
     DateTime start = end.copyWith(day: 0, hour: 12);
     String endDate = end.toIso8601String();
     String startDate = start.toIso8601String();
-    return await getCollections(
-        widget.username, widget.admin, startDate, endDate);
+    final coll =
+        await getCollections(widget.username, widget.admin, startDate, endDate);
+    final res = coll
+        .where((element) => origin == 'Tutti' || element.origin == origin)
+        .toList();
+    return res;
   }
 
   @override
@@ -68,9 +72,13 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                       fontSize: 20),
-                  child: Expanded(flex: 1, child: OriginsDropdown(setOrigin)),
+                  child: Expanded(
+                      flex: 1,
+                      child: OriginsDropdown(
+                        setOrigin,
+                        includeSelectAll: true,
+                      )),
                 ),
-                /* Expanded(flex: 1, child: OriginsDropdown(setOrigin)), */
                 Expanded(
                     flex: 15,
                     child: CollectionsList(
