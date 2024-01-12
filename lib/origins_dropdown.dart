@@ -63,7 +63,7 @@ class OriginsDropdown extends StatelessWidget {
         future: getSortedOrigins(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('Nessun dato trovato'));
+            return const Center(child: Text('Nessun conferente trovato'));
           } else if (snapshot.hasData) {
             List<Origin> list = snapshot.data as List<Origin>;
             return OriginsDropdownHelper(list, onChanged, includeSelectAll);
@@ -93,7 +93,7 @@ class DropdownState extends State<OriginsDropdownHelper> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.origins.isEmpty) return const Text('Nessun dato trovato');
+    if (widget.origins.isEmpty) return const Text('Nessun conferente trovato');
     if (widget.includeSelectAll && widget.origins[0].name != 'Tutti') {
       widget.origins.insert(0, Origin('Tutti', 0, 0));
     }

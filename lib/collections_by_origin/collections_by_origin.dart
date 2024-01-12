@@ -1,10 +1,11 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
-import 'package:app_raccolta_latte/collections/origins_dropdown.dart';
+import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/drawer.dart';
 
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/users_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,11 +28,18 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
       .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
 
   String origin = 'Tutti';
+  String utente = 'Tutti';
   int total = 0;
 
   void setOrigin(value) {
     setState(() {
       origin = value;
+    });
+  }
+
+  void setUser(value) {
+    setState(() {
+      utente = value;
     });
   }
 
@@ -44,6 +52,7 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
         await getCollections(widget.username, widget.admin, startDate, endDate);
     final res = coll
         .where((element) => origin == 'Tutti' || element.origin == origin)
+        .where((element) => utente == 'Tutti' || element.user == utente)
         .toList();
     return res;
   }
@@ -77,6 +86,18 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
                       flex: 1,
                       child: OriginsDropdown(
                         setOrigin,
+                        includeSelectAll: true,
+                      )),
+                ),
+                DefaultTextStyle(
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20),
+                  child: Expanded(
+                      flex: 1,
+                      child: UsersDropdown(
+                        setUser,
                         includeSelectAll: true,
                       )),
                 ),

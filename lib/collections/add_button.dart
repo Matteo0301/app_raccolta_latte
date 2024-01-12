@@ -1,6 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_model.dart';
-import 'package:app_raccolta_latte/collections/origins_dropdown.dart';
+import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/date_time_picker.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
