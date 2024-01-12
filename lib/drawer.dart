@@ -65,13 +65,11 @@ class AppMenu extends StatelessWidget {
         },
       );
       collectionsByOrigin = ListTile(
-        title: const Text('Raccolte per conferente'),
+        title: const Text('Storico Raccolte'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CollectionsByOrigin(
-                title: 'Raccolte per conferente',
-                username: username,
-                admin: admin);
+                title: 'Storico Raccolte', username: username, admin: admin);
           }));
         },
       );
