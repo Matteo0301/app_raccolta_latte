@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/login.dart';
 import 'package:app_raccolta_latte/theme.dart';
@@ -11,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HttpOverrides.global = DevHttpOverrides();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Raccolta latte',

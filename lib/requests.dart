@@ -9,8 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
 
-const String baseUrl = 'http://localhost:3000';
+const String baseUrl = 'https://localhost:3000';
+const String domain = 'dummy.com';
 String token = '';
+
+class DevHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = _certificateCheck;
+  }
+}
+
+bool _certificateCheck(cert, host, port) {
+  return host == domain || host == 'localhost';
+}
 
 class LoggedUser {
   final String username;
