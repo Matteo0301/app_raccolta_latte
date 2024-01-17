@@ -5,12 +5,14 @@ import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
 
-const String baseUrl = 'https://localhost:3000';
-const String domain = 'dummy.com';
+final String baseUrl = dotenv.env['BASE_URL'] ?? 'https://localhost:3000';
+final String domain = dotenv.env['DOMAIN'] ?? 'dummy.com';
+final String? key = dotenv.env['MAPS_KEY'];
 String token = '';
 
 class DevHttpOverrides extends HttpOverrides {
@@ -249,7 +251,7 @@ Future<void> removeCollections(List<Collection> collections) async {
 
 Future<Tuple2<double, double>> address2Coordinates(String address) async {
   final String url =
-      'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeFull(address)}&key=AIzaSyAUCp-oxH6E-0Vb31QVecPX5-a0JQuOzno';
+      'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeFull(address)}&key=${key}';
   try {
     final response = await http.get(Uri.parse(url));
     print(response.body);
