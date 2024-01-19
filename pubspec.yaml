@@ -93,3 +93,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+msix_config:
+  display_name: Raccolta latte
+  publisher_display_name: Matteo Mariotti
+  msix_version: 1.0.0.0
+  capabilities: internetClient, location
+  certificate_path: cert.pfx
+  certificate_password: Password123
