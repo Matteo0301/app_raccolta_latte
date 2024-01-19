@@ -3,15 +3,12 @@ name: Flutter release
 on:
     release:
         types: [published]
+    workflow_dispatch:
 
 jobs:
     android:
         runs-on: ubuntu-latest
         steps:
-            - shell: bash
-              env:
-                ENVIRONMENT: ${{ secrets.Environment }}
-              run: 'echo "$ENVIRONMENT" | base64 -d > .env'
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v1
               with:
@@ -19,6 +16,10 @@ jobs:
             - uses: subosito/flutter-action@v1
               with:
                   flutter-version: '3.16.3'
+            - shell: bash
+              env:
+                ENVIRONMENT: ${{ secrets.Environment }}
+              run: 'echo "$ENVIRONMENT" | base64 -d > .env'
             - run: flutter pub get
             - run: flutter build apk --release
             - uses: actions/upload-artifact@v2
@@ -28,10 +29,6 @@ jobs:
     web:
         runs-on: ubuntu-latest
         steps:
-            - shell: bash
-              env:
-                ENVIRONMENT: ${{ secrets.Environment }}
-              run: 'echo "$ENVIRONMENT" | base64 -d > .env'
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v1
               with:
@@ -39,6 +36,10 @@ jobs:
             - uses: subosito/flutter-action@v1
               with:
                   flutter-version: '3.16.3'
+            - shell: bash
+              env:
+                ENVIRONMENT: ${{ secrets.Environment }}
+              run: 'echo "$ENVIRONMENT" | base64 -d > .env'
             - run: flutter pub get
             - run: flutter build web --release
             - shell: bash
@@ -54,6 +55,10 @@ jobs:
         - uses: subosito/flutter-action@v2
           with:
             channel: 'beta'
+        - shell: bash
+          env:
+            ENVIRONMENT: ${{ secrets.Environment }}
+          run: 'echo "$ENVIRONMENT" | base64 -d > .env'
         - run: flutter config --enable-windows-desktop
         - run: flutter build windows
         - run: dart run msix:create
@@ -61,7 +66,7 @@ jobs:
           with:
             name: release-windows
             path: build/windows/x64/runner/Release/app_raccolta_latte.msix
-    build:
+    linux:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
@@ -71,6 +76,10 @@ jobs:
         - run: |
             sudo apt-get update -y
             sudo apt-get install -y ninja-build libgtk-3-dev
+        - shell: bash
+          env:
+            ENVIRONMENT: ${{ secrets.Environment }}
+          run: 'echo "$ENVIRONMENT" | base64 -d > .env'
         - run: flutter config --enable-linux-desktop
         - run: flutter build linux
         - name: Install appimage-builder
