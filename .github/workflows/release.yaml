@@ -91,4 +91,8 @@ jobs:
           run: |
             cp build/linux/x64/release/bundle $PWD/AppDir
             appimage-builder --recipe AppImageBuilder.yml
+        - uses: actions/upload-artifact@v2
+          with:
+            name: release-windows
+            path: Raccolta_Latte-latest-x86_64.AppImage
         
