@@ -59,7 +59,9 @@ jobs:
         - shell: bash
           env:
             ENVIRONMENT: ${{ secrets.Environment }}
-          run: 'echo "$ENVIRONMENT" | base64 -d > .env'
+            MSIX_CERTIFICATE: ${{ secrets.MSIX_CERTIFICATE }}
+            MSIX_PASSWORD: ${{ secrets.MSIX_PASSWORD }}
+          run: 'echo "$ENVIRONMENT" | base64 -d > .env && echo "$MSIX_CERTIFICATE" | base64 -d > cert.pfx && echo "$MSIX_PASSWORD" | base64 -d >> pubspec.yaml'
         - run: flutter config --enable-windows-desktop
         - run: flutter build windows
         - run: dart run msix:create

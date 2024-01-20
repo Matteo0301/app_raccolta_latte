@@ -100,4 +100,4 @@ msix_config:
   msix_version: 1.0.0.0
   capabilities: internetClient, location
   certificate_path: cert.pfx
-  certificate_password: Password123
+  certificate_password: Fr!zza!2024
