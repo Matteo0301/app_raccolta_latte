@@ -47,3 +47,4 @@ AppDir/*
 appimage-build/*
 *.AppImage*
 *.env
+*.pfx
