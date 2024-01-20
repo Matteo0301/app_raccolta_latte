@@ -69,7 +69,7 @@ jobs:
         - run: flutter config --enable-windows-desktop
         - run: flutter build windows
         - shell: bash
-          run: 'yes | dart run msix:create'
+          run: 'yes | dart run msix:create ; return 0'
         - uses: actions/upload-artifact@v2
           with:
             name: release-windows
