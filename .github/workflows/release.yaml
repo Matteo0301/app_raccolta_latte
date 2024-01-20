@@ -65,7 +65,7 @@ jobs:
             ENVIRONMENT: ${{ secrets.Environment }}
             MSIX_CERTIFICATE: ${{ secrets.MSIX_CERTIFICATE }}
             MSIX_PASSWORD: ${{ secrets.MSIX_PASSWORD }}
-          run: 'echo "$ENVIRONMENT" | base64 -d > .env && echo "$MSIX_CERTIFICATE" | base64 -d > cert.pfx && echo "$MSIX_PASSWORD" | base64 -d >> pubspec.yaml'
+          run: 'echo "$ENVIRONMENT" | base64 -d > .env && echo "$MSIX_CERTIFICATE" | base64 -d > cert.pfx && echo -e "\n" >> pubspec.yaml && echo "$MSIX_PASSWORD" | base64 -d >> pubspec.yaml'
         - run: flutter config --enable-windows-desktop
         - run: flutter build windows
         - run: dart run msix:create
@@ -90,6 +90,7 @@ jobs:
           run: 'echo "$ENVIRONMENT" | base64 -d > .env'
         - run: flutter config --enable-linux-desktop
         - run: flutter build linux
+        - run: 'sudo apt install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync'
         - name: Install appimage-builder
           run: |
             wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
