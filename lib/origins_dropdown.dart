@@ -37,7 +37,7 @@ class OriginsDropdown extends StatelessWidget {
     }
 
     locationData = await location.getLocation();
-    print(locationData);
+    debugPrint('$locationData');
     return locationData;
   }
 

@@ -25,7 +25,7 @@ class DateTimePickerState extends State<DateTimePicker> {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime.now(),
         currentDate: date);
-    print(picked);
+    debugPrint('$picked');
 
     if (picked != null) {
       setState(() {
@@ -40,7 +40,7 @@ class DateTimePickerState extends State<DateTimePicker> {
     final TimeOfDay? picked = await showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute));
-    print(picked);
+    debugPrint('$picked');
 
     if (picked != null) {
       setState(() {

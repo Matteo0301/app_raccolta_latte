@@ -27,7 +27,7 @@ class UsersModel extends ChangeNotifier {
     } else {
       _selected.remove(index);
     }
-    print(_selected);
+    debugPrint('$_selected');
     notifyListeners();
   }
 

@@ -9,10 +9,11 @@ jobs:
     android:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-java@v1
+            - uses: actions/checkout@v3
+            - uses: actions/setup-java@v2
               with:
-                  java-version: 11
+                distribution: 'zulu'
+                java-version: '11'
             - uses: subosito/flutter-action@v1
               with:
                   flutter-version: '3.16.3'
@@ -89,7 +90,7 @@ jobs:
             sudo mv appimage-builder-x86_64.AppImage /usr/local/bin/appimage-builder
         - name: Build AppImage
           run: |
-            cp build/linux/x64/release/bundle $PWD/AppDir
+            cp -r build/linux/x64/release/bundle $PWD/AppDir
             appimage-builder --recipe AppImageBuilder.yml
         - uses: actions/upload-artifact@v2
           with:

@@ -14,7 +14,7 @@ class OriginsList extends StatelessWidget {
         return FutureBuilder(
             future: getOrigins(),
             builder: (context, snapshot) {
-              print('FutureBuilder');
+              debugPrint('FutureBuilder');
               if (snapshot.hasError) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('${snapshot.error}')));

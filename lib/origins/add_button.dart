@@ -74,7 +74,7 @@ class AddButton extends StatelessWidget {
       return null;
     }
     final coordinates = await address2Coordinates(tmp[1]);
-    print(coordinates);
+    debugPrint('$coordinates');
     if (res == null) {
       return null;
     }

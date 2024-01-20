@@ -102,7 +102,7 @@ class AddButton extends StatelessWidget {
           );
         });
     debugPrint('res1: $res');
-    print(date);
+    debugPrint('$date');
     if (res == null) {
       return null;
     }

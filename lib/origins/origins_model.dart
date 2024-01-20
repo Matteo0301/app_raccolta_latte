@@ -27,7 +27,7 @@ class OriginsModel extends ChangeNotifier {
     } else {
       selected.remove(index);
     }
-    print(selected);
+    debugPrint('$selected');
     notifyListeners();
   }
 
@@ -35,10 +35,10 @@ class OriginsModel extends ChangeNotifier {
     final List<int> l = selected.toList();
     l.sort();
     for (int i in l.reversed) {
-      print(i);
+      debugPrint('$i');
       _items.removeAt(i);
     }
-    print(_items);
+    debugPrint('$_items');
     selected.clear();
     notifyListeners();
   }
