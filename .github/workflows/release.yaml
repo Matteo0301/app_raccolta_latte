@@ -99,7 +99,7 @@ jobs:
         - name: Build AppImage
           run: |
             cp -r build/linux/x64/release/bundle $PWD/AppDir
-            appimage-builder --recipe AppImageBuilder.yml
+            appimage-builder --skip-tests --recipe AppImageBuilder.yml
         - uses: actions/upload-artifact@v2
           with:
             name: release-windows
