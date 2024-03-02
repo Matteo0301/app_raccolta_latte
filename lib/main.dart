@@ -4,7 +4,6 @@ import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/login.dart';
 import 'package:app_raccolta_latte/theme.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   runApp(const MyApp());
