@@ -6,7 +6,6 @@ import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 import 'package:app_raccolta_latte/secrets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
