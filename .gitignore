@@ -48,3 +48,4 @@ appimage-build/*
 *.AppImage*
 *.env
 *.pfx
+lib/secrets.dart

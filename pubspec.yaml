@@ -38,7 +38,6 @@ dependencies:
   http: ^1.1.0
   location: ^5.0.3
   tuple: ^2.0.2
-  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +65,6 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-  assets: [.env] # path to your .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

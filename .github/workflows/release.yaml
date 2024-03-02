@@ -21,7 +21,7 @@ jobs:
           - shell: bash
             env:
               ENVIRONMENT: ${{ secrets.Environment }}
-            run: 'echo "$ENVIRONMENT" | base64 -d > .env'
+            run: 'echo "$ENVIRONMENT" | base64 -d > lib/secrets.dart'
           - run: flutter pub get
           - run: flutter build apk --release
           - uses: actions/upload-artifact@v2
@@ -43,7 +43,7 @@ jobs:
           - shell: bash
             env:
               ENVIRONMENT: ${{ secrets.Environment }}
-            run: 'echo "$ENVIRONMENT" | base64 -d > .env'
+            run: 'echo "$ENVIRONMENT" | base64 -d > lib/secrets.dart'
           - run: flutter pub get
           - run: flutter build web --release
           - shell: bash
@@ -65,7 +65,7 @@ jobs:
             ENVIRONMENT: ${{ secrets.Environment }}
             MSIX_CERTIFICATE: ${{ secrets.MSIX_CERTIFICATE }}
             MSIX_PASSWORD: ${{ secrets.MSIX_PASSWORD }}
-          run: 'echo "$ENVIRONMENT" | base64 -d > .env && echo "$MSIX_CERTIFICATE" | base64 -d > cert.pfx && echo -e "\n" >> pubspec.yaml && echo "$MSIX_PASSWORD" | base64 -d >> pubspec.yaml'
+          run: 'echo "$ENVIRONMENT" | base64 -d > lib/secrets.dart && echo "$MSIX_CERTIFICATE" | base64 -d > cert.pfx && echo -e "\n" >> pubspec.yaml && echo "$MSIX_PASSWORD" | base64 -d >> pubspec.yaml'
         - run: flutter config --enable-windows-desktop
         - run: flutter build windows
         - shell: bash
@@ -91,7 +91,7 @@ jobs:
         - shell: bash
           env:
             ENVIRONMENT: ${{ secrets.Environment }}
-          run: 'echo "$ENVIRONMENT" | base64 -d > .env'
+          run: 'echo "$ENVIRONMENT" | base64 -d > lib/secrets.dart'
         - run: flutter config --enable-linux-desktop
         - run: flutter build linux
         - run: 'sudo apt install -y binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync'

@@ -7,10 +7,6 @@ import 'package:app_raccolta_latte/theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
-  debugPrint('BASE_URL: $baseUrl');
-  debugPrint('DOMAIN: $domain');
-  debugPrint('MAPS_KEY: $key');
   runApp(const MyApp());
 }
 

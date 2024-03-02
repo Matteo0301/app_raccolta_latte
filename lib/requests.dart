@@ -4,15 +4,13 @@ import 'dart:io';
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/users/user.dart';
+import 'package:app_raccolta_latte/secrets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
 
-final String baseUrl = dotenv.env['BASE_URL'] ?? 'localhost:3000';
-final String domain = dotenv.env['DOMAIN'] ?? 'dummy.com';
-final String? key = dotenv.env['MAPS_KEY'];
 String token = '';
 
 class DevHttpOverrides extends HttpOverrides {
