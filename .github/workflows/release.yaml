@@ -70,6 +70,7 @@ jobs:
         - run: flutter build windows
         - shell: bash
           run: 'yes | dart run msix:create'
+          continue-on-error: true
         - name: Save installer
           if: always()
           uses: actions/upload-artifact@v2
@@ -105,6 +106,6 @@ jobs:
             appimage-builder --skip-tests --recipe AppImageBuilder.yml
         - uses: actions/upload-artifact@v2
           with:
-            name: release-windows
-            path: Raccolta_Latte-latest-x86_64.AppImage
+            name: release-linux
+            path: Raccolta_latte-latest-x86_64.AppImage
         
