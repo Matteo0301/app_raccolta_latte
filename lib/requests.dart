@@ -44,9 +44,17 @@ Future<LoggedUser> loginRequest(username, password) async {
   try {
     final response = await runZonedGuarded<Future<http.Response?>>(() async {
       try {
-        return await http
-            .get(Uri.http(baseUrl, '/users/auth/$username/$password'))
-            .timeout(const Duration(seconds: 1));
+        return await http.get(
+            Uri.https(baseUrl, '/users/auth/$username/$password'),
+            headers: {
+              'Access-Control-Allow-Origin':
+                  '*', // Required for CORS support to work
+              'Access-Control-Allow-Credentials':
+                  'true', // Required for cookies, authorization headers with HTTPS
+              'Access-Control-Allow-Headers':
+                  'Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale',
+              'Access-Control-Allow-Methods': 'POST, OPTIONS'
+            }).timeout(const Duration(seconds: 1));
       } catch (e) {
         return null;
       }
@@ -68,7 +76,7 @@ Future<LoggedUser> loginRequest(username, password) async {
 
 Future<List<User>> getUsers() async {
   try {
-    final response = await http.get(Uri.http(baseUrl, '/users'),
+    final response = await http.get(Uri.https(baseUrl, '/users'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
     if (response.statusCode == 200) {
       List<User> users = [];
@@ -88,7 +96,7 @@ Future<void> removeUsers(List<User> users) async {
   try {
     for (var u in users) {
       debugPrint('$baseUrl/users/${u.name}');
-      final response = await http.delete(Uri.http(baseUrl, '/users/${u.name}'),
+      final response = await http.delete(Uri.https(baseUrl, '/users/${u.name}'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
       if (response.statusCode != 204) {
         return Future.error('Operazione non permessa');
@@ -101,7 +109,7 @@ Future<void> removeUsers(List<User> users) async {
 
 Future<void> addUser(User user, String pass) async {
   try {
-    final response = await http.put(Uri.http(baseUrl, '/users'),
+    final response = await http.put(Uri.https(baseUrl, '/users'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
@@ -125,7 +133,7 @@ Future<void> addUser(User user, String pass) async {
 Future<List<Origin>> getOrigins() async {
   try {
     debugPrint(Uri.encodeFull('$baseUrl/origins'));
-    final response = await http.get(Uri.http(baseUrl, '/origins'),
+    final response = await http.get(Uri.https(baseUrl, '/origins'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
     debugPrint(response.statusCode.toString());
     debugPrint(response.body);
@@ -148,7 +156,7 @@ Future<void> removeOrigins(List<Origin> origins) async {
     for (var o in origins) {
       debugPrint('$baseUrl/origins/${o.name}');
       final response = await http.delete(
-          Uri.http(baseUrl, '/origins/${o.name}'),
+          Uri.https(baseUrl, '/origins/${o.name}'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
       if (response.statusCode != 201) {
         return Future.error('Operazione non permessa');
@@ -162,7 +170,7 @@ Future<void> removeOrigins(List<Origin> origins) async {
 Future<void> addOrigin(Origin origin) async {
   try {
     final response = await http.post(
-        Uri.http(
+        Uri.https(
             baseUrl, '/origins/${origin.name}/${origin.lat}/${origin.lng}'),
         headers: {'Authorization': 'Bearer $token'});
     debugPrint('Response: ${response.body}');
@@ -185,7 +193,7 @@ Future<List<Collection>> getCollections(
     url = 'collections/byuser/$username/$startDate/$endDate';
   }
   try {
-    final response = await http.get(Uri.http(baseUrl, url),
+    final response = await http.get(Uri.https(baseUrl, url),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
     debugPrint(response.body);
     if (response.statusCode == 200) {
@@ -211,7 +219,7 @@ Future<void> addCollection(Collection collection, bool admin) async {
   };
   try {
     final response = await http.post(
-        Uri.http(
+        Uri.https(
             baseUrl, '/collections/${collection.user}/${collection.origin}'),
         headers: {
           'Authorization': 'Bearer $token',
@@ -233,7 +241,7 @@ Future<void> removeCollections(List<Collection> collections) async {
   try {
     for (var c in collections) {
       final response = await http.delete(
-          Uri.http(baseUrl, '/collections/${c.id}'),
+          Uri.https(baseUrl, '/collections/${c.id}'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
       debugPrint('$response.statusCode');
       debugPrint(response.body);
