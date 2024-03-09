@@ -39,8 +39,8 @@ class AddButtonState extends State<AddButton> {
             title: const Text('Inserisci'),
             content: Container(
                 padding: const EdgeInsets.all(10),
-                height: 250,
-                width: 100,
+                height: 300,
+                width: 300,
                 child: ListView(
                   children: [
                     Form(

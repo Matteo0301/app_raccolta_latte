@@ -25,9 +25,9 @@ class AddButton extends StatelessWidget {
           return AlertDialog(
             title: const Text('Inserisci'),
             content: Container(
-                padding: const EdgeInsets.all(10),
-                height: 300,
-                width: 100,
+                padding: const EdgeInsets.all(5),
+                height: 350,
+                width: 300,
                 child: ListView(
                   children: [
                     Form(

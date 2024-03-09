@@ -18,32 +18,36 @@ class AddButton extends StatelessWidget {
             title: const Text('Inserisci'),
             content: Container(
                 padding: const EdgeInsets.all(10),
-                height: 100,
-                width: 100,
+                height: 300,
+                width: 300,
                 child: ListView(
                   children: [
                     Form(
                         key: _formKey,
                         child: Column(children: [
-                          TextFormField(
-                            controller: nameController,
-                            validator: (value) => value!.isEmpty
-                                ? 'Inserisci il nuovo conferente'
-                                : null,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Nome'),
-                          ),
-                          TextFormField(
-                            controller: addressController,
-                            validator: (value) => value!.isEmpty
-                                ? 'Inserisci l\'indirizzo'
-                                : null,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Via Roma 1, Pegognaga',
-                                labelText: 'Indirizzo'),
-                          )
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: nameController,
+                                validator: (value) => value!.isEmpty
+                                    ? 'Inserisci il nuovo conferente'
+                                    : null,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Nome'),
+                              )),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: addressController,
+                                validator: (value) => value!.isEmpty
+                                    ? 'Inserisci l\'indirizzo'
+                                    : null,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Via Roma 1, Pegognaga',
+                                    labelText: 'Indirizzo'),
+                              ))
                         ]))
                   ],
                 )),
