@@ -1,6 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
-import 'package:app_raccolta_latte/collections/collections_model.dart';
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/drawer.dart';
 
@@ -121,7 +121,7 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
       ));
     }
     return ChangeNotifierProvider(
-      create: (context) => CollectionsModel(),
+      create: (context) => Model<Collection>(),
       child: Scaffold(
           appBar: AppBar(
               title: Text(

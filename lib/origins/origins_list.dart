@@ -1,5 +1,5 @@
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
-import 'package:app_raccolta_latte/origins/origins_model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,7 @@ class OriginsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OriginsModel>(
+    return Consumer<Model<Origin>>(
       builder: (context, origins, child) {
         return FutureBuilder(
             future: getOrigins(),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -56,7 +57,7 @@ class OriginsDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       const Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(MyTheme.padding),
         child: Text('Conferente: '),
       ),
       FutureBuilder(
@@ -97,7 +98,10 @@ class DropdownState extends State<OriginsDropdownHelper> {
     if (widget.includeSelectAll && widget.origins[0].name != 'Tutti') {
       widget.origins.insert(0, Origin('Tutti', 0, 0));
     }
-    if (selected == '') selected = widget.origins[0].name;
+    if (selected == '') {
+      selected = widget.origins[0].name;
+      widget.onChanged(selected);
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: DropdownButton<String>(

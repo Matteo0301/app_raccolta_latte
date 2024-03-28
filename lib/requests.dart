@@ -211,7 +211,7 @@ Future<List<Collection>> getCollections(
   }
 }
 
-Future<void> addCollection(Collection collection, bool admin) async {
+Future<void> addCollection(Collection collection) async {
   final Map<String, String> body = <String, String>{
     'quantity': collection.quantity.toString(),
     'quantity2': collection.quantity2.toString(),

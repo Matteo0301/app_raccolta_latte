@@ -1,142 +1,90 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
-import 'package:app_raccolta_latte/collections/collections_model.dart';
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/date_time_picker.dart';
 import 'package:app_raccolta_latte/requests.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:app_raccolta_latte/utils.dart';
+import 'package:flutter/material.dart' hide TextField;
 import 'package:provider/provider.dart';
 
-class AddButton extends StatelessWidget {
-  AddButton({super.key, required this.username, required this.admin});
-  final _formKey = GlobalKey<FormState>();
+class AddButton extends StatefulWidget {
+  const AddButton({super.key, required this.username, required this.admin});
   final String username;
   final bool admin;
+
+  @override
+  State<StatefulWidget> createState() => AddButtonState();
+}
+
+class AddButtonState extends State<AddButton> {
   String origin = '';
   DateTime date = DateTime.now();
 
-  Future<Collection?> inputPopup(BuildContext context) async {
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> inputPopup(
+      BuildContext context, Model<Collection> collections) async {
     date = DateTime.now();
-    String? res = await showDialog(
+    String? s = await showDialog(
         context: context,
         builder: (_) {
           var quantityController = TextEditingController();
           var quantity2Controller = TextEditingController(text: '0');
-          return AlertDialog(
-            title: const Text('Inserisci'),
-            content: Container(
-                padding: const EdgeInsets.all(5),
-                height: 350,
-                width: 300,
-                child: ListView(
-                  children: [
-                    Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  controller: quantityController,
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Inserisci la quantità'
-                                      : null,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Quantità'),
-                                )),
-                            Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  controller: quantity2Controller,
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Inserisci il latte di seconda'
-                                      : null,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Seconda'),
-                                )),
-                            Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: OriginsDropdown((value) {
-                                  origin = value;
-                                }))
-                          ],
-                        )),
-                    DateTimePicker(
-                      date: date,
-                      onChanged: (value) {
-                        date = value;
-                      },
-                      admin: admin,
-                    ),
-                  ],
-                )),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Annulla'),
-              ),
-              TextButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    Navigator.pop(context,
-                        '${quantityController.text};${quantity2Controller.text}');
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Inserisci un valore')));
-                  }
-                },
-                child: const Text('Aggiungi'),
-              ),
-            ],
-          );
+          return AddDialog(
+              formKey: _formKey,
+              addAction: () {
+                Navigator.pop(context,
+                    '${quantityController.text};${quantity2Controller.text}');
+              },
+              context: context,
+              children: [
+                TextField(
+                    text: 'Quantità',
+                    error: 'Inserisci la quantità',
+                    controller: quantityController),
+                TextField(
+                    text: 'Seconda',
+                    error: 'Inserisci il latte di seconda',
+                    controller: quantity2Controller),
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OriginsDropdown((value) {
+                      origin = value;
+                    })),
+                DateTimePicker(
+                  date: date,
+                  onChanged: (value) {
+                    date = value;
+                  },
+                  admin: widget.admin,
+                ),
+              ]);
         });
-    debugPrint('res1: $res');
-    debugPrint('$date');
-    if (res == null) {
-      return null;
+    if (s == null) {
+      return;
     }
-    var tmp = res.split(';');
+    var tmp = s.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
-    return Collection('', username, origin, quantity, quantity2, date);
+    debugPrint('$date');
+    final Collection c =
+        Collection('', widget.username, origin, quantity, quantity2, date);
+    await addCollection(c)
+        .then((value) => {collections.add(c), collections.notifyListeners()})
+        .catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+      collections.notifyListeners();
+      return <dynamic>{};
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CollectionsModel>(
+    return Consumer<Model<Collection>>(
       builder: (context, collections, child) {
-        return FloatingActionButton.extended(
-          onPressed: () async {
-            Collection? res = await inputPopup(context);
-            debugPrint('res2: $res');
-            if (res != null) {
-              await addCollection(res, admin)
-                  .then((value) =>
-                      {collections.add(res), collections.notifyListeners()})
-                  .catchError((error) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(error.toString())),
-                );
-                collections.notifyListeners();
-                return <dynamic>{};
-              });
-            }
-            debugPrint('lista: ${collections.items}');
-          },
-          label: const Text('Aggiungi'),
-          icon: const Icon(Icons.add),
-        );
+        return Button<Collection>(inputPopup: inputPopup, model: collections);
       },
     );
   }

@@ -1,6 +1,6 @@
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:app_raccolta_latte/users/user.dart';
-import 'package:app_raccolta_latte/users/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +9,7 @@ class UsersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UsersModel>(builder: (context, users, child) {
+    return Consumer<Model<User>>(builder: (context, users, child) {
       return FutureBuilder(
           future: getUsers(),
           builder: (context, snapshot) {

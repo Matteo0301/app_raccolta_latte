@@ -1,7 +1,7 @@
 import 'package:app_raccolta_latte/drawer.dart';
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/origins/origins_list.dart';
-import 'package:app_raccolta_latte/origins/origins_model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,14 +49,14 @@ class OriginPage extends StatelessWidget {
     }
 
     return ChangeNotifierProvider(
-      create: (context) => OriginsModel(),
+      create: (context) => Model<Origin>(),
       child: Scaffold(
         appBar: AppBar(
             title: Text(title),
             centerTitle: true,
             automaticallyImplyLeading: false,
             actions: [
-              Consumer<OriginsModel>(
+              Consumer<Model<Origin>>(
                 builder: (context, origins, child) {
                   if (origins.selected.isEmpty) {
                     return const SizedBox.shrink();

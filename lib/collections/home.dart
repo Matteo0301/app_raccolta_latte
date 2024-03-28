@@ -1,11 +1,11 @@
 import 'package:app_raccolta_latte/collections/add_button.dart';
 import 'package:app_raccolta_latte/collections/collection.dart';
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 //import 'package:app_raccolta_latte/collections/drawer.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
 import 'package:provider/provider.dart';
-import 'package:app_raccolta_latte/collections/collections_model.dart';
 
 import '../drawer.dart';
 
@@ -92,7 +92,7 @@ class HomePageState extends State<HomePage> {
       ));
     }
     return ChangeNotifierProvider(
-      create: (context) => CollectionsModel(),
+      create: (context) => Model<Collection>(),
       child: Scaffold(
           appBar: AppBar(
               title: Text(
@@ -100,7 +100,7 @@ class HomePageState extends State<HomePage> {
               centerTitle: true,
               automaticallyImplyLeading: false,
               actions: [
-                Consumer<CollectionsModel>(
+                Consumer<Model<Collection>>(
                   builder: (context, collections, child) {
                     if (collections.selected.isEmpty) {
                       return const SizedBox.shrink();

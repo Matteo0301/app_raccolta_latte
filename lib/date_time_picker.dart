@@ -1,3 +1,4 @@
+import 'package:app_raccolta_latte/theme.dart';
 import 'package:flutter/material.dart';
 
 class DateTimePicker extends StatefulWidget {
@@ -11,7 +12,6 @@ class DateTimePicker extends StatefulWidget {
   final bool admin;
 
   @override
-  // ignore: no_logic_in_create_state
   DateTimePickerState createState() => DateTimePickerState(date);
 }
 
@@ -58,15 +58,15 @@ class DateTimePickerState extends State<DateTimePicker> {
           Row(
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(MyTheme.padding),
                 child: Text('Data'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: Text('${date.day}/${date.month}/${date.year}'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: IconButton(
                     onPressed: () => selectDate(context),
                     icon: const Icon(Icons.date_range)),
@@ -76,15 +76,15 @@ class DateTimePickerState extends State<DateTimePicker> {
           Row(
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(MyTheme.padding),
                 child: Text('Ora'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: Text('${date.hour}:${date.minute}'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: IconButton(
                     onPressed: () => selectTime(context),
                     icon: const Icon(Icons.access_time)),
@@ -99,11 +99,11 @@ class DateTimePickerState extends State<DateTimePicker> {
           Row(
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(MyTheme.padding),
                 child: Text('Data'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: Text('${date.day}/${date.month}/${date.year}'),
               ),
             ],
@@ -111,11 +111,11 @@ class DateTimePickerState extends State<DateTimePicker> {
           Row(
             children: [
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(MyTheme.padding),
                 child: Text('Ora'),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(MyTheme.padding),
                 child: Text('${date.hour}:${date.minute}'),
               ),
             ],

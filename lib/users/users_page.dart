@@ -1,11 +1,11 @@
 import 'package:app_raccolta_latte/drawer.dart';
+import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/users/add_button.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 import 'package:app_raccolta_latte/users/users_list.dart';
-import 'package:app_raccolta_latte/users/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'add_button.dart';
 
 class UsersPage extends StatelessWidget {
   const UsersPage(
@@ -49,14 +49,14 @@ class UsersPage extends StatelessWidget {
     }
 
     return ChangeNotifierProvider(
-      create: (context) => UsersModel(),
+      create: (context) => Model<User>(),
       child: Scaffold(
         appBar: AppBar(
             title: Text(title),
             centerTitle: true,
             automaticallyImplyLeading: false,
             actions: [
-              Consumer<UsersModel>(
+              Consumer<Model<User>>(
                 builder: (context, u, child) {
                   if (u.selected.isEmpty) {
                     return const SizedBox.shrink();

@@ -1,15 +1,15 @@
 import 'dart:collection';
-import 'package:app_raccolta_latte/users/user.dart';
+
 import 'package:flutter/material.dart';
 
-class UsersModel extends ChangeNotifier {
-  final List<User> _items = [];
+class Model<T> extends ChangeNotifier {
+  final List<T> _items = [];
   final Set<int> _selected = {};
 
-  UnmodifiableListView<User> get items => UnmodifiableListView(_items);
+  UnmodifiableListView<T> get items => UnmodifiableListView(_items);
   UnmodifiableSetView<int> get selected => UnmodifiableSetView(_selected);
 
-  void add(User item) {
+  void add(T item) {
     _items.add(item);
     // This call tells the widgets that are listening to this model to rebuild.
     //notifyListeners();
@@ -27,7 +27,6 @@ class UsersModel extends ChangeNotifier {
     } else {
       _selected.remove(index);
     }
-    debugPrint('$_selected');
     notifyListeners();
   }
 

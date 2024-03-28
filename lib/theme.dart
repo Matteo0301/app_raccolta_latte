@@ -22,4 +22,5 @@ class MyTheme {
       foregroundColor: Colors.black,
     ),
   );
+  static const double padding = 10.0;
 }
