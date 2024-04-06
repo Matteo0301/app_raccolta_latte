@@ -48,7 +48,7 @@ class AddButtonState extends State<AddButton> {
                     controller: quantity2Controller),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OriginsDropdown((value) {
+                    child: OriginsDropdown((value, redraw) {
                       origin = value;
                     })),
                 DateTimePicker(

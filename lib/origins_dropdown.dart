@@ -10,7 +10,7 @@ import 'package:location/location.dart';
 class OriginsDropdown extends StatelessWidget {
   const OriginsDropdown(this.onChanged,
       {super.key, this.includeSelectAll = false});
-  final ValueSetter<String> onChanged;
+  final void Function(String, bool) onChanged;
   final bool includeSelectAll;
 
   Future<LocationData?> getLocation() async {
@@ -82,7 +82,7 @@ class OriginsDropdownHelper extends StatefulWidget {
       this.origins, this.onChanged, this.includeSelectAll,
       {super.key});
   final List<Origin> origins;
-  final ValueSetter<String> onChanged;
+  final void Function(String, bool) onChanged;
   final bool includeSelectAll;
 
   @override
@@ -100,7 +100,7 @@ class DropdownState extends State<OriginsDropdownHelper> {
     }
     if (selected == '') {
       selected = widget.origins[0].name;
-      widget.onChanged(selected);
+      widget.onChanged(selected, false);
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -117,7 +117,7 @@ class DropdownState extends State<OriginsDropdownHelper> {
               selected = '';
             } else {
               selected = value;
-              widget.onChanged(selected);
+              widget.onChanged(selected, true);
             }
           });
         },

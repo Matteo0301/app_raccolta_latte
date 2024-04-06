@@ -31,10 +31,14 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
   String utente = 'Tutti';
   int total = 0;
 
-  void setOrigin(value) {
-    setState(() {
+  void setOrigin(value, redraw) {
+    if (redraw) {
+      setState(() {
+        origin = value;
+      });
+    } else {
       origin = value;
-    });
+    }
   }
 
   void setUser(value) {
@@ -125,7 +129,7 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
       child: Scaffold(
           appBar: AppBar(
               title: Text(
-                  '${widget.title} Mese: ${date.month.toString().padLeft(2, "0")}/${date.year}'),
+                  'Mese: ${date.month.toString().padLeft(2, "0")}/${date.year}'),
               centerTitle: true,
               automaticallyImplyLeading: false,
               actions: [

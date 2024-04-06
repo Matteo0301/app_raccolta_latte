@@ -1,3 +1,5 @@
+import 'package:html/parser.dart';
+
 class Collection {
   final String user;
   final String origin;
@@ -15,8 +17,13 @@ class Collection {
   }
 
   factory Collection.fromJson(Map<String, dynamic> json) {
-    return Collection(json['_id'], json['user'], json['origin'],
-        json['quantity'], json['quantity2'], DateTime.parse(json['date']));
+    return Collection(
+        json['_id'],
+        parseFragment(json['user']).text!,
+        parseFragment(json['origin']).text!,
+        json['quantity'],
+        json['quantity2'],
+        DateTime.parse(json['date']));
   }
 
   String toJson() {

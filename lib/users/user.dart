@@ -1,3 +1,5 @@
+import 'package:html/parser.dart';
+
 class User {
   final String name;
   bool isAdmin;
@@ -20,9 +22,10 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     if (json['password'] != null) {
-      return User(json['username'], json['admin'], password: json['password']);
+      return User(parseFragment(json['username']).text!, json['admin'],
+          password: json['password']);
     } else {
-      return User(json['username'], json['admin']);
+      return User(parseFragment(json['username']).text!, json['admin']);
     }
   }
 
