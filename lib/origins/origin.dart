@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:html/parser.dart';
 
 class Origin {
   final String name;
@@ -17,7 +18,7 @@ class Origin {
   }
 
   factory Origin.fromJson(Map<String, dynamic> json) {
-    return Origin(json['name'], json['lat'], json['lng']);
+    return Origin(parseFragment(json['name']).text!, json['lat'], json['lng']);
   }
 
   distance(location) {
