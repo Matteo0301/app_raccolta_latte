@@ -80,15 +80,22 @@ class TextField extends StatelessWidget {
 
 class AdminCheckbox extends StatefulWidget {
   final void Function(bool) onChanged;
+  final bool initialCheckBoxValue;
 
-  const AdminCheckbox({super.key, required this.onChanged});
+  const AdminCheckbox(
+      {super.key, required this.onChanged, required this.initialCheckBoxValue});
 
   @override
-  AdminCheckboxState createState() => AdminCheckboxState();
+  // ignore: no_logic_in_create_state
+  AdminCheckboxState createState() => AdminCheckboxState(initialCheckBoxValue);
 }
 
 class AdminCheckboxState extends State<AdminCheckbox> {
   bool checkboxValue = false;
+
+  AdminCheckboxState(bool initialValue) {
+    checkboxValue = initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +117,7 @@ class AdminCheckboxState extends State<AdminCheckbox> {
 }
 
 class Button<T> extends StatelessWidget {
-  final Future<void> Function(BuildContext context, Model<T> initial)
+  final Future<void> Function(BuildContext context, Model<T> model, T? initial)
       inputPopup;
   final Model<T> model;
 
@@ -119,7 +126,7 @@ class Button<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      onPressed: () async => inputPopup(context, model),
+      onPressed: () async => inputPopup(context, model, null),
       label: const Text('Aggiungi'),
       icon: const Icon(Icons.add),
     );
@@ -138,5 +145,27 @@ class UpdateButton<T> extends StatelessWidget {
           model.notifyListeners();
         },
         icon: const Icon(Icons.update));
+  }
+}
+
+class ModifyButton<T> extends StatelessWidget {
+  final Model<T> model;
+  final Future<void> Function(BuildContext context, Model<T> model, T? initial)
+      inputPopup;
+
+  const ModifyButton(
+      {super.key, required this.model, required this.inputPopup});
+
+  @override
+  Widget build(BuildContext context) {
+    if (model.selected.length != 1) {
+      return const SizedBox.shrink();
+    } else {
+      return IconButton(
+          onPressed: () {
+            inputPopup(context, model, model.items[model.selected.first]);
+          },
+          icon: const Icon(Icons.create));
+    }
   }
 }

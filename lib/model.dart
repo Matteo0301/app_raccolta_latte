@@ -30,6 +30,10 @@ class Model<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSelected() {
+    _selected.clear();
+  }
+
   @override
   void notifyListeners() {
     super.notifyListeners();

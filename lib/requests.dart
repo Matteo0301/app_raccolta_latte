@@ -107,12 +107,33 @@ Future<void> removeUsers(List<User> users) async {
   }
 }
 
+Future<void> updateUser(String name, User user, String pass) async {
+  try {
+    debugPrint('$baseUrl/users/$name');
+    final response = await http.patch(Uri.https(baseUrl, '/users/$name'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'username': user.name,
+          'admin': user.isAdmin.toString(),
+          'password': pass
+        }));
+    if (response.statusCode != 204) {
+      return Future.error('Operazione non permessa');
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
 Future<void> addUser(User user, String pass) async {
   try {
     final response = await http.put(Uri.https(baseUrl, '/users'),
         headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: jsonEncode(<String, String>{
           'username': user.name,
@@ -172,7 +193,7 @@ Future<void> addOrigin(Origin origin) async {
     final response = await http.post(
         Uri.https(
             baseUrl, '/origins/${origin.name}/${origin.lat}/${origin.lng}'),
-        headers: {'Authorization': 'Bearer $token'});
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
     debugPrint('Response: ${response.body}');
     if (response.statusCode != 201) {
       debugPrint('Wrong status code');
@@ -222,8 +243,8 @@ Future<void> addCollection(Collection collection) async {
         Uri.https(
             baseUrl, '/collections/${collection.user}/${collection.origin}'),
         headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: jsonEncode(body));
     debugPrint('Response: ${response.body}');

@@ -69,11 +69,15 @@ class OriginPage extends StatelessWidget {
                             o.add(origins.items[index]);
                           }
                           removeOrigins(o)
-                              .then((value) => {origins.notifyListeners()})
+                              .then((value) => {
+                                    origins.clearSelected(),
+                                    origins.notifyListeners()
+                                  })
                               .catchError((error) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(error.toString())),
                             );
+
                             origins.notifyListeners();
                             return <dynamic>{};
                           });

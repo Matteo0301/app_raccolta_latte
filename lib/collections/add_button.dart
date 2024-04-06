@@ -22,8 +22,8 @@ class AddButtonState extends State<AddButton> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> inputPopup(
-      BuildContext context, Model<Collection> collections) async {
+  Future<void> inputPopup(BuildContext context, Model<Collection> collections,
+      Collection? initial) async {
     date = DateTime.now();
     String? s = await showDialog(
         context: context,

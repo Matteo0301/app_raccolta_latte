@@ -113,12 +113,15 @@ class HomePageState extends State<HomePage> {
                               coll.add(collections.items[index]);
                             }
                             removeCollections(coll)
-                                .then(
-                                    (value) => {collections.notifyListeners()})
+                                .then((value) => {
+                                      collections.clearSelected(),
+                                      collections.notifyListeners()
+                                    })
                                 .catchError((error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(error.toString())),
                               );
+
                               collections.notifyListeners();
                               return <dynamic>{};
                             });

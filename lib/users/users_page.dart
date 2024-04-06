@@ -69,11 +69,13 @@ class UsersPage extends StatelessWidget {
                             users.add(u.items[index]);
                           }
                           removeUsers(users)
-                              .then((value) => {u.notifyListeners()})
+                              .then((value) =>
+                                  {u.clearSelected(), u.notifyListeners()})
                               .catchError((error) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(error.toString())),
                             );
+
                             u.notifyListeners();
                             return <dynamic>{};
                           });
@@ -84,6 +86,10 @@ class UsersPage extends StatelessWidget {
               ),
               Consumer<Model<User>>(builder: (context, users, child) {
                 return UpdateButton(model: users);
+              }),
+              Consumer<Model<User>>(builder: (context, users, child) {
+                return ModifyButton(
+                    model: users, inputPopup: AddButtonState.inputPopup);
               })
             ],
             leading: !leading

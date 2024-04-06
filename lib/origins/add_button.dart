@@ -10,7 +10,8 @@ class AddButton extends StatelessWidget {
   AddButton({super.key});
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> inputPopup(BuildContext context, Model<Origin> origins) async {
+  Future<void> inputPopup(
+      BuildContext context, Model<Origin> origins, Origin? initial) async {
     String? s = await showDialog(
         context: context,
         builder: (_) {
