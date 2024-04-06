@@ -4,6 +4,7 @@ import 'package:app_raccolta_latte/requests.dart';
 import 'package:app_raccolta_latte/users/add_button.dart';
 import 'package:app_raccolta_latte/users/user.dart';
 import 'package:app_raccolta_latte/users/users_list.dart';
+import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -81,6 +82,9 @@ class UsersPage extends StatelessWidget {
                   }
                 },
               ),
+              Consumer<Model<User>>(builder: (context, users, child) {
+                return UpdateButton(model: users);
+              })
             ],
             leading: !leading
                 ? null

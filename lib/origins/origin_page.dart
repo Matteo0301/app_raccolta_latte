@@ -3,6 +3,7 @@ import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/origins/origins_list.dart';
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_button.dart';
@@ -81,6 +82,9 @@ class OriginPage extends StatelessWidget {
                   }
                 },
               ),
+              Consumer<Model<Origin>>(builder: (context, origins, child) {
+                return UpdateButton(model: origins);
+              })
             ],
             leading: !leading
                 ? null

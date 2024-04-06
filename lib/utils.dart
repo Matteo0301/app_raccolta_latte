@@ -125,3 +125,18 @@ class Button<T> extends StatelessWidget {
     );
   }
 }
+
+class UpdateButton<T> extends StatelessWidget {
+  final Model<T> model;
+
+  const UpdateButton({super.key, required this.model});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          model.notifyListeners();
+        },
+        icon: const Icon(Icons.update));
+  }
+}

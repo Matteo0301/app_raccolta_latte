@@ -2,6 +2,7 @@ import 'package:app_raccolta_latte/collections/add_button.dart';
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart';
 //import 'package:app_raccolta_latte/collections/drawer.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
@@ -150,6 +151,10 @@ class HomePageState extends State<HomePage> {
                       });
                     },
                     icon: const Icon(Icons.arrow_forward_ios)),
+                Consumer<Model<Collection>>(
+                    builder: (context, collections, child) {
+                  return UpdateButton(model: collections);
+                })
               ],
               leading: !leading
                   ? null
