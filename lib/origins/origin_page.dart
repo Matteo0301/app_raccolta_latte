@@ -88,6 +88,10 @@ class OriginPage extends StatelessWidget {
               ),
               Consumer<Model<Origin>>(builder: (context, origins, child) {
                 return UpdateButton(model: origins);
+              }),
+              Consumer<Model<Origin>>(builder: (context, users, child) {
+                return ModifyButton(
+                    model: users, inputPopup: AddButton.inputPopup);
               })
             ],
             leading: !leading

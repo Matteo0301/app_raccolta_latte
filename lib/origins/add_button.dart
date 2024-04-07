@@ -7,35 +7,15 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 class AddButton extends StatelessWidget {
-  AddButton({super.key});
-  final _formKey = GlobalKey<FormState>();
+  const AddButton({super.key});
 
-  Future<void> inputPopup(
+  static Future<void> inputPopup(
       BuildContext context, Model<Origin> origins, Origin? initial) async {
     String? s = await showDialog(
         context: context,
-        builder: (_) {
-          var nameController = TextEditingController();
-          var addressController = TextEditingController();
-          return AddDialog(
-              formKey: _formKey,
-              addAction: () {
-                Navigator.pop(context,
-                    '${nameController.text};${addressController.text}}');
-              },
-              context: context,
-              children: [
-                TextField(
-                    text: 'Nome',
-                    error: 'Inserisci il nuovo conferente',
-                    controller: nameController),
-                TextField(
-                    text: 'Indirizzo',
-                    error: 'Inserisci l\'indirizzo',
-                    hint: 'Via Roma 1, Pegognaga',
-                    controller: addressController),
-              ]);
-        });
+        builder: (_) => OriginForm(
+              initial: initial,
+            ));
     final tmp = s?.split(';');
     if (tmp == null) {
       return;
@@ -53,15 +33,26 @@ class AddButton extends StatelessWidget {
       return;
     }
     final o = Origin(tmp[0], coordinates.item1, coordinates.item2);
-    await addOrigin(o)
-        .then((value) => {origins.add(o), origins.notifyListeners()})
-        .catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      );
-      origins.notifyListeners();
-      return <dynamic>{};
-    });
+    if (initial == null) {
+      await addOrigin(o)
+          .then((value) => {origins.add(o), origins.notifyListeners()})
+          .catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.toString())),
+        );
+        origins.notifyListeners();
+        return <dynamic>{};
+      });
+    } else {
+      await updateOrigin(initial.name, o)
+          .then((value) => {origins.clearSelected(), origins.notifyListeners()})
+          .catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.toString())),
+        );
+        origins.notifyListeners();
+      });
+    }
   }
 
   @override
@@ -71,5 +62,35 @@ class AddButton extends StatelessWidget {
         return Button<Origin>(inputPopup: inputPopup, model: origins);
       },
     );
+  }
+}
+
+class OriginForm extends StatelessWidget {
+  OriginForm({super.key, required this.initial});
+  final _formKey = GlobalKey<FormState>();
+  final Origin? initial;
+
+  @override
+  Widget build(BuildContext context) {
+    var nameController = TextEditingController(text: initial?.name);
+    var addressController = TextEditingController();
+    return AddDialog(
+        formKey: _formKey,
+        addAction: () {
+          Navigator.pop(
+              context, '${nameController.text};${addressController.text}}');
+        },
+        context: context,
+        children: [
+          TextField(
+              text: 'Nome',
+              error: 'Inserisci il nuovo conferente',
+              controller: nameController),
+          TextField(
+              text: 'Indirizzo',
+              error: 'Inserisci l\'indirizzo',
+              hint: 'Via Roma 1, Pegognaga',
+              controller: addressController),
+        ]);
   }
 }

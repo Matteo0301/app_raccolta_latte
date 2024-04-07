@@ -188,6 +188,27 @@ Future<void> removeOrigins(List<Origin> origins) async {
   }
 }
 
+Future<void> updateOrigin(String name, Origin origin) async {
+  try {
+    debugPrint('$baseUrl/origins/$name');
+    final response = await http.patch(Uri.https(baseUrl, '/origins/$name'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json'
+        },
+        body: jsonEncode(<String, String>{
+          'name': origin.name,
+          'lat': '${origin.lat}',
+          'lng': '${origin.lng}',
+        }));
+    if (response.statusCode != 204) {
+      return Future.error('Operazione non permessa');
+    }
+  } catch (e) {
+    return Future.error('Impossibile connettersi al server');
+  }
+}
+
 Future<void> addOrigin(Origin origin) async {
   try {
     final response = await http.post(
