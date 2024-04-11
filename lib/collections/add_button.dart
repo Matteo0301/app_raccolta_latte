@@ -2,9 +2,11 @@ import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/date_time_picker.dart';
+import 'package:app_raccolta_latte/recognizer.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart' hide TextField;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddButton extends StatefulWidget {
@@ -19,16 +21,34 @@ class AddButton extends StatefulWidget {
 class AddButtonState extends State<AddButton> {
   String origin = '';
   DateTime date = DateTime.now();
+  late ImagePicker _picker; // = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _picker = ImagePicker();
+  }
 
   final _formKey = GlobalKey<FormState>();
+  final MLKitTextRecognizer recognizer = MLKitTextRecognizer();
+
+  Future<String?> obtainImage() async {
+    final file = await _picker.pickImage(source: ImageSource.camera);
+    return file?.path;
+  }
 
   Future<void> inputPopup(BuildContext context, Model<Collection> collections,
       Collection? initial) async {
     date = DateTime.now();
+    String? filePath = await obtainImage();
+    debugPrint('File path: $filePath');
+    String recognized = await recognizer.processImage(filePath!);
+    debugPrint(recognized);
+
     String? s = await showDialog(
         context: context,
         builder: (_) {
-          var quantityController = TextEditingController();
+          var quantityController = TextEditingController(text: recognized);
           var quantity2Controller = TextEditingController(text: '0');
           return AddDialog(
               formKey: _formKey,
