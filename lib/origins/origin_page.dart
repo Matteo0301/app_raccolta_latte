@@ -108,7 +108,7 @@ class OriginPage extends StatelessWidget {
                   })),
         body: content,
         drawer: drawer,
-        floatingActionButton: AddButton(),
+        floatingActionButton: const AddButton(),
       ),
     );
   }

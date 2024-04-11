@@ -46,12 +46,12 @@ class AddButton extends StatelessWidget {
     } else {
       await updateOrigin(initial.name, o)
           .then((value) => {origins.clearSelected(), origins.notifyListeners()})
-          .catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
-        origins.notifyListeners();
-      });
+          .onError((error, stackTrace) => {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())),
+                ),
+                origins.notifyListeners()
+              });
     }
   }
 

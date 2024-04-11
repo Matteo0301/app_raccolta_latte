@@ -47,12 +47,12 @@ class AddButtonState extends State<AddButton> {
         u.password!,
       )
           .then((value) => {users.clearSelected(), users.notifyListeners()})
-          .catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
-        users.notifyListeners();
-      });
+          .onError((error, stackTrace) => {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(error.toString())),
+                ),
+                users.notifyListeners()
+              });
     }
   }
 

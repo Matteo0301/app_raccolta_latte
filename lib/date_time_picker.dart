@@ -12,6 +12,7 @@ class DateTimePicker extends StatefulWidget {
   final bool admin;
 
   @override
+  // ignore: no_logic_in_create_state
   DateTimePickerState createState() => DateTimePickerState(date);
 }
 
