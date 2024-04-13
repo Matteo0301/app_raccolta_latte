@@ -45,41 +45,45 @@ class AddButtonState extends State<AddButton> {
     String recognized = await recognizer.processImage(filePath!);
     debugPrint(recognized);
 
-    String? s = await showDialog(
-        context: context,
-        builder: (_) {
-          var quantityController = TextEditingController(text: recognized);
-          var quantity2Controller = TextEditingController(text: '0');
-          return AddDialog(
-              formKey: _formKey,
-              addAction: () {
-                Navigator.pop(context,
-                    '${quantityController.text};${quantity2Controller.text}');
-              },
-              context: context,
-              children: [
-                TextField(
-                    text: 'Quantità',
-                    error: 'Inserisci la quantità',
-                    controller: quantityController),
-                TextField(
-                    text: 'Seconda',
-                    error: 'Inserisci il latte di seconda',
-                    controller: quantity2Controller),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OriginsDropdown((value, redraw) {
-                      origin = value;
-                    })),
-                DateTimePicker(
-                  date: date,
-                  onChanged: (value) {
-                    date = value;
-                  },
-                  admin: widget.admin,
-                ),
-              ]);
-        });
+    String? s;
+    if (context.mounted) {
+      s = await showDialog(
+          context: context,
+          builder: (_) {
+            var quantityController = TextEditingController(text: recognized);
+            var quantity2Controller = TextEditingController(text: '0');
+            return AddDialog(
+                formKey: _formKey,
+                addAction: () {
+                  Navigator.pop(context,
+                      '${quantityController.text};${quantity2Controller.text}');
+                },
+                context: context,
+                children: [
+                  TextField(
+                      text: 'Quantità',
+                      error: 'Inserisci la quantità',
+                      controller: quantityController),
+                  TextField(
+                      text: 'Seconda',
+                      error: 'Inserisci il latte di seconda',
+                      controller: quantity2Controller),
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OriginsDropdown((value, redraw) {
+                        origin = value;
+                      })),
+                  DateTimePicker(
+                    date: date,
+                    onChanged: (value) {
+                      date = value;
+                    },
+                    admin: widget.admin,
+                  ),
+                ]);
+          });
+    }
+
     if (s == null) {
       return;
     }
