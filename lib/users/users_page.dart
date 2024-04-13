@@ -64,6 +64,14 @@ class UsersPage extends StatelessWidget {
                   } else {
                     return IconButton(
                         onPressed: () async {
+                          bool? confirm = await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return ConfirmDialog(context: context);
+                              });
+                          if (confirm == null || !confirm) {
+                            return;
+                          }
                           List<User> users = [];
                           for (var index in u.selected) {
                             users.add(u.items[index]);

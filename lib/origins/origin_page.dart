@@ -64,6 +64,14 @@ class OriginPage extends StatelessWidget {
                   } else {
                     return IconButton(
                         onPressed: () async {
+                          bool? confirm = await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return ConfirmDialog(context: context);
+                              });
+                          if (confirm == null || !confirm) {
+                            return;
+                          }
                           List<Origin> o = [];
                           for (var index in origins.selected) {
                             o.add(origins.items[index]);

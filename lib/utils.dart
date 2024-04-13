@@ -169,3 +169,21 @@ class ModifyButton<T> extends StatelessWidget {
     }
   }
 }
+
+class ConfirmDialog extends AlertDialog {
+  final BuildContext context;
+
+  ConfirmDialog({super.key, required this.context})
+      : super(title: const Text('Conferma'), actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annulla'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text('Conferma'),
+          ),
+        ]);
+}

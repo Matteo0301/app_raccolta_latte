@@ -107,7 +107,15 @@ class HomePageState extends State<HomePage> {
                       return const SizedBox.shrink();
                     } else {
                       return IconButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            bool? confirm = await showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return ConfirmDialog(context: context);
+                                });
+                            if (confirm == null || !confirm) {
+                              return;
+                            }
                             List<Collection> coll = [];
                             for (var index in collections.selected) {
                               coll.add(collections.items[index]);
