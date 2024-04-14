@@ -54,7 +54,7 @@ Future<LoggedUser> loginRequest(username, password) async {
               'Access-Control-Allow-Headers':
                   'Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale',
               'Access-Control-Allow-Methods': 'POST, OPTIONS'
-            }).timeout(const Duration(seconds: 1));
+            });
       } catch (e) {
         return null;
       }
