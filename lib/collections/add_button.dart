@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/origins_dropdown.dart';
@@ -33,8 +35,13 @@ class AddButtonState extends State<AddButton> {
   final MLKitTextRecognizer recognizer = MLKitTextRecognizer();
 
   Future<String?> obtainImage() async {
-    final file = await _picker.pickImage(source: ImageSource.camera);
-    return file?.path;
+    final String? file;
+    if (Platform.isAndroid || Platform.isIOS) {
+      file = (await _picker.pickImage(source: ImageSource.camera))?.path;
+    } else {
+      file = null;
+    }
+    return file;
   }
 
   Future<void> inputPopup(BuildContext context, Model<Collection> collections,
@@ -42,7 +49,12 @@ class AddButtonState extends State<AddButton> {
     date = DateTime.now();
     String? filePath = await obtainImage();
     debugPrint('File path: $filePath');
-    String recognized = await recognizer.processImage(filePath!);
+    final String recognized;
+    if (filePath != null) {
+      recognized = await recognizer.processImage(filePath);
+    } else {
+      recognized = '';
+    }
     debugPrint(recognized);
 
     String? s;
