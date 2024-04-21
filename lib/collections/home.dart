@@ -4,7 +4,6 @@ import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart';
-//import 'package:app_raccolta_latte/collections/drawer.dart';
 import 'package:app_raccolta_latte/collections/collections_list.dart';
 import 'package:provider/provider.dart';
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class MLKitTextRecognizer {
@@ -15,6 +16,9 @@ class MLKitTextRecognizer {
   Future<String> processImage(String imgPath) async {
     final image = InputImage.fromFile(File(imgPath));
     final recognized = await recognizer.processImage(image);
-    return recognized.text;
+    String res = recognized.text;
+    res = res.replaceAll(RegExp(r'[^0-9]'), '');
+    debugPrint(res);
+    return res;
   }
 }
