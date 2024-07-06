@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class OriginsDropdown extends StatelessWidget {
-  const OriginsDropdown(this.onChanged,
+  OriginsDropdown(this.onChanged,
       {super.key, this.includeSelectAll = false});
   final void Function(String, bool) onChanged;
   final bool includeSelectAll;
+  late List<Origin>? origins = null;
 
   Future<LocationData?> getLocation() async {
     if (!kIsWeb && !Platform.isAndroid) return null;
@@ -43,6 +44,9 @@ class OriginsDropdown extends StatelessWidget {
   }
 
   getSortedOrigins() async {
+    if(this.origins != null){
+      return this.origins;
+    }
     final LocationData? location;
     location = await getLocation();
     final origins = await getOrigins();
@@ -50,6 +54,7 @@ class OriginsDropdown extends StatelessWidget {
       origins
           .sort((a, b) => a.distance(location).compareTo(b.distance(location)));
     }
+    this.origins = origins;
     return origins;
   }
 
