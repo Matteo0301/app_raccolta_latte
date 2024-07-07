@@ -1,11 +1,8 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
-import 'package:app_raccolta_latte/collections/collections_list.dart';
+import 'package:app_raccolta_latte/collections_by_origin/collections_table.dart';
 import 'package:app_raccolta_latte/model.dart';
-import 'package:app_raccolta_latte/origins_dropdown.dart';
 import 'package:app_raccolta_latte/drawer.dart';
-
 import 'package:app_raccolta_latte/requests.dart';
-import 'package:app_raccolta_latte/users_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,12 +49,8 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
     DateTime start = end.copyWith(day: 0, hour: 12);
     String endDate = end.toIso8601String();
     String startDate = start.toIso8601String();
-    final coll =
+    final res =
         await getCollections(widget.username, widget.admin, startDate, endDate);
-    final res = coll
-        .where((element) => origin == 'Tutti' || element.origin == origin)
-        .where((element) => utente == 'Tutti' || element.user == utente)
-        .toList();
     return res;
   }
 
@@ -78,45 +71,14 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
               current: 'Home',
             ),
           ),
-          Expanded(
-              flex: 3,
-              child: Column(children: [
-                DefaultTextStyle(
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 20),
-                  child: Expanded(
-                      flex: 1,
-                      child: OriginsDropdown(
-                        setOrigin,
-                        includeSelectAll: true,
-                      )),
-                ),
-                DefaultTextStyle(
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 20),
-                  child: Expanded(
-                      flex: 1,
-                      child: UsersDropdown(
-                        setUser,
-                        includeSelectAll: true,
-                      )),
-                ),
-                Expanded(
-                    flex: 15,
-                    child: CollectionsList(
-                        widget.username, widget.admin, date, getCollectionList))
-              ])),
+          Column(children : [CollectionsTable(date: date, request: getCollectionList)]),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = CollectionsList(
-          widget.username, widget.admin, date, getCollectionList);
+      content = CollectionsTable(
+          date: date, request: getCollectionList);
       drawer = Drawer(
           child: AppMenu(
         username: widget.username,

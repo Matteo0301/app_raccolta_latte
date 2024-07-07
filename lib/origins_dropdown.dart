@@ -12,7 +12,7 @@ class OriginsDropdown extends StatelessWidget {
       {super.key, this.includeSelectAll = false});
   final void Function(String, bool) onChanged;
   final bool includeSelectAll;
-  late List<Origin>? origins = null;
+  late List<Origin>? origins;
 
   Future<LocationData?> getLocation() async {
     if (!kIsWeb && !Platform.isAndroid) return null;
