@@ -1,11 +1,14 @@
 import 'package:app_raccolta_latte/model.dart';
+import 'package:app_raccolta_latte/origin_details/details_page.dart';
 import 'package:app_raccolta_latte/origins/origin.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OriginsList extends StatelessWidget {
-  const OriginsList({super.key});
+  const OriginsList({super.key, required this.admin, required this.username});
+  final bool admin;
+  final String username;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,22 @@ class OriginsList extends StatelessWidget {
                         itemCount: origins.items.length,
                         itemBuilder: (context, index) {
                           return ListTile(
+                            trailing: IconButton(
+                              icon: const Icon(Icons.arrow_forward_ios),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => OriginDetails(
+                                            title: 'Dettagli conferente',
+                                            admin: admin,
+                                            origin: origins
+                                                .items[origins.items.length -
+                                                    index -
+                                                    1]
+                                                .name,
+                                            username: username,
+                                          ))),
+                            ),
                             title: Text(
                                 style: const TextStyle(fontSize: 20),
                                 'Conferente: ${origins.items[origins.items.length - index - 1].name}'),

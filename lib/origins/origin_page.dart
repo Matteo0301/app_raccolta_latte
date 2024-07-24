@@ -34,13 +34,16 @@ class OriginPage extends StatelessWidget {
               current: 'Conferenti',
             ),
           ),
-          const Expanded(flex: 3, child: OriginsList()),
+          Expanded(flex: 3, child: OriginsList(admin: admin, username: username,)),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = const OriginsList();
+      content = OriginsList(
+        admin: admin,
+        username: username,
+      );
       drawer = Drawer(
           child: AppMenu(
         username: username,
