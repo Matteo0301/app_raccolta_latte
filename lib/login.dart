@@ -14,7 +14,7 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -36,10 +36,11 @@ class LoginState extends State<Login> {
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextFormField(
                     autofillHints: const [AutofillHints.username],
-                    controller: emailController,
+                    controller: userController,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: AutofillHints.username),
+                        labelText: 'Username'),
+                    keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Inserisci il nome utente';
@@ -57,7 +58,8 @@ class LoginState extends State<Login> {
                     obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: AutofillHints.password),
+                        labelText: 'Password'),
+                    keyboardType: TextInputType.visiblePassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Inserisci la password';
@@ -74,7 +76,7 @@ class LoginState extends State<Login> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           // request to the server
-                          String username = emailController.text;
+                          String username = userController.text;
                           String password = passwordController.text;
 
                           loginRequest(username, password).then(
