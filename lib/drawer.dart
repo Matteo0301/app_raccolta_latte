@@ -1,5 +1,5 @@
 import 'package:app_raccolta_latte/collections/home.dart';
-import 'package:app_raccolta_latte/collections_by_origin/collections_by_origin.dart';
+import 'package:app_raccolta_latte/collections_table/collections_table.dart';
 import 'package:app_raccolta_latte/origins/origin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app_raccolta_latte/theme.dart';
@@ -68,7 +68,7 @@ class AppMenu extends StatelessWidget {
         title: const Text('Storico Raccolte'),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CollectionsByOrigin(
+            return CollectionsTablePage(
                 title: 'Storico Raccolte', username: username, admin: admin);
           }));
         },

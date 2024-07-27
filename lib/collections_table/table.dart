@@ -1,13 +1,13 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/scrollable_table.dart';
 import 'package:flutter/material.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 
-class DetailsTable extends StatelessWidget {
+class CollectionsTable extends StatelessWidget {
   final DateTime date;
   final ValueGetter<Future<List<Collection>>> request;
 
-  const DetailsTable({super.key, required this.date, required this.request});
+  const CollectionsTable(
+      {super.key, required this.date, required this.request});
 
   int getDay(Collection c) {
     final DateTime res;
@@ -19,20 +19,16 @@ class DetailsTable extends StatelessWidget {
     return res.day;
   }
 
-  String getRow(Collection c) {
-    return (c.date.hour >= 12) ? 'sera' : 'mattina';
-  }
-
   Map<String, Map<int, int>> getMap(List<Collection> coll) {
     final Map<String, Map<int, int>> res = {};
     for (var element in coll) {
-      final String row = getRow(element);
+      final String origin = element.origin;
       final int day = getDay(element);
-      if (!res.containsKey(row)) {
-        res[row] = {};
+      if (!res.containsKey(origin)) {
+        res[origin] = {};
       }
-      final int old = (res[row]![day]) ?? 0;
-      res[row]![day] = old + element.quantity + element.quantity2;
+      final int old = (res[origin]![day]) ?? 0;
+      res[origin]![day] = old + element.quantity + element.quantity2;
     }
     return res;
   }

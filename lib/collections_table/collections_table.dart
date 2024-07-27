@@ -1,13 +1,13 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
-import 'package:app_raccolta_latte/collections_by_origin/collections_table.dart';
+import 'package:app_raccolta_latte/collections_table/table.dart';
 import 'package:app_raccolta_latte/model.dart';
 import 'package:app_raccolta_latte/drawer.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CollectionsByOrigin extends StatefulWidget {
-  const CollectionsByOrigin(
+class CollectionsTablePage extends StatefulWidget {
+  const CollectionsTablePage(
       {super.key,
       required this.title,
       required this.username,
@@ -17,32 +17,12 @@ class CollectionsByOrigin extends StatefulWidget {
   final bool admin;
 
   @override
-  State<StatefulWidget> createState() => CollectionsByOriginState();
+  State<StatefulWidget> createState() => CollectionsTablePageState();
 }
 
-class CollectionsByOriginState extends State<CollectionsByOrigin> {
+class CollectionsTablePageState extends State<CollectionsTablePage> {
   DateTime date = DateTime.now()
       .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
-
-  String origin = 'Tutti';
-  String utente = 'Tutti';
-  int total = 0;
-
-  void setOrigin(value, redraw) {
-    if (redraw) {
-      setState(() {
-        origin = value;
-      });
-    } else {
-      origin = value;
-    }
-  }
-
-  void setUser(value) {
-    setState(() {
-      utente = value;
-    });
-  }
 
   Future<List<Collection>> getCollectionList() async {
     DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
@@ -56,36 +36,9 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content;
+    Widget content = CollectionsTable(date: date, request: getCollectionList);
+
     Drawer? drawer;
-    bool leading = true;
-    Size screenSize = MediaQuery.of(context).size;
-    if (screenSize.width > 800) {
-      content = Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: AppMenu(
-              username: widget.username,
-              admin: widget.admin,
-              current: 'Home',
-            ),
-          ),
-          Column(children : [CollectionsTable(date: date, request: getCollectionList)]),
-        ],
-      );
-      drawer = null;
-      leading = false;
-    } else {
-      content = CollectionsTable(
-          date: date, request: getCollectionList);
-      drawer = Drawer(
-          child: AppMenu(
-        username: widget.username,
-        admin: widget.admin,
-        current: 'Home',
-      ));
-    }
     return ChangeNotifierProvider(
       create: (context) => Model<Collection>(),
       child: Scaffold(
@@ -120,18 +73,12 @@ class CollectionsByOriginState extends State<CollectionsByOrigin> {
                     },
                     icon: const Icon(Icons.arrow_forward_ios)),
               ],
-              leading: !leading
-                  ? null
-                  : Builder(builder: (context) {
-                      return IconButton(
-                        icon: const Icon(Icons.menu),
-                        onPressed: () {
-                          if (leading) {
-                            Scaffold.of(context).openDrawer();
-                          }
-                        },
-                      );
-                    })),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )),
           body: content,
           drawer: drawer),
     );
