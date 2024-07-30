@@ -105,7 +105,7 @@ class AddButtonState extends State<AddButton> {
     debugPrint('$date');
     final Collection c =
         Collection('', widget.username, origin, quantity, quantity2, date);
-    await addCollection(c)
+    await addCollection(c, filePath)
         .then((value) => {collections.add(c), collections.notifyListeners()})
         .catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(

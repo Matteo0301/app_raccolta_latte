@@ -253,11 +253,20 @@ Future<List<Collection>> getCollections(
   }
 }
 
-Future<void> addCollection(Collection collection) async {
+Future<void> addCollection(Collection collection, String? filename) async {
+  String base64Image;
+  if (filename == null) {
+    base64Image = 'SGVsbG8=';
+  } else {
+    List<int> imageBytes = await File(filename).readAsBytes();
+    print(imageBytes);
+    base64Image = base64Encode(imageBytes);
+  }
   final Map<String, String> body = <String, String>{
     'quantity': collection.quantity.toString(),
     'quantity2': collection.quantity2.toString(),
-    'date': collection.date.toIso8601String()
+    'date': collection.date.toIso8601String(),
+    'image': base64Image
   };
   try {
     final response = await http.post(
@@ -268,7 +277,7 @@ Future<void> addCollection(Collection collection) async {
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: jsonEncode(body));
-    debugPrint('Response: ${response.body}');
+    //debugPrint('Response: ${response.body}');
     if (response.statusCode != 201) {
       debugPrint('Wrong status code');
       return Future.error('Errore durante l\'operazione');
