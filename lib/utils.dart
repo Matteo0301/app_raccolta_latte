@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:app_raccolta_latte/model.dart';
+import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/secrets.dart';
 import 'package:flutter/material.dart';
 
 class AddDialog extends AlertDialog {
@@ -44,6 +48,32 @@ class AddDialog extends AlertDialog {
                 }
               },
               child: const Text('Aggiungi'),
+            ),
+          ],
+        );
+}
+
+class ImageDialog extends AlertDialog {
+  final BuildContext context;
+  final String url;
+
+  ImageDialog({super.key, required this.context, required this.url})
+      : super(
+          title: const Text('Immagine'),
+          content: Container(
+              padding: const EdgeInsets.all(10),
+              height: 300,
+              width: 300,
+              child: Image.network(
+                url,
+                headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+                errorBuilder: (context, error, stackTrace) =>
+                    const Text('Nessuna immagine disponibile'),
+              )),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Annulla'),
             ),
           ],
         );

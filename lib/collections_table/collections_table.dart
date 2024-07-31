@@ -1,7 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/collections_table/table.dart';
 import 'package:app_raccolta_latte/model.dart';
-import 'package:app_raccolta_latte/drawer.dart';
 import 'package:app_raccolta_latte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

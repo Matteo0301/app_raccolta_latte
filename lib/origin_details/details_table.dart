@@ -1,7 +1,6 @@
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/scrollable_table.dart';
 import 'package:flutter/material.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 class DetailsTable extends StatelessWidget {
   final DateTime date;

@@ -256,10 +256,9 @@ Future<List<Collection>> getCollections(
 Future<void> addCollection(Collection collection, String? filename) async {
   String base64Image;
   if (filename == null) {
-    base64Image = 'SGVsbG8=';
+    base64Image = '';
   } else {
     List<int> imageBytes = await File(filename).readAsBytes();
-    print(imageBytes);
     base64Image = base64Encode(imageBytes);
   }
   final Map<String, String> body = <String, String>{

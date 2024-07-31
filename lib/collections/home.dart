@@ -44,8 +44,18 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  DateTime date = DateTime.now()
-      .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
+  late DateTime date;
+
+  @override
+  void initState() {
+    super.initState();
+    date = DateTime.now()
+        .copyWith(month: DateTime.now().month + 1, day: 0, hour: 12);
+    final next = date.copyWith(day: date.day + 1);
+    if (next.day == 1 && date.hour >= 12) {
+      date = next;
+    }
+  }
 
   Future<List<Collection>> getCollectionList() async {
     DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);

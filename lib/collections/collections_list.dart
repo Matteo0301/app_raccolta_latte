@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:app_raccolta_latte/collections/collection.dart';
 import 'package:app_raccolta_latte/model.dart';
+import 'package:app_raccolta_latte/requests.dart';
+import 'package:app_raccolta_latte/secrets.dart';
+import 'package:app_raccolta_latte/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,8 +54,25 @@ class CollectionsList extends StatelessWidget {
                                     'Conferente: ${collections.items[collections.items.length - index - 1].origin}'),
                                 subtitle: Text(
                                     'Quantità: ${collections.items[collections.items.length - index - 1].quantity}, Seconda: ${collections.items[collections.items.length - index - 1].quantity2}'),
-                                trailing: Text(
-                                    '${collections.items[collections.items.length - index - 1].user}   (${collections.items[collections.items.length - index - 1].date.day.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.month.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.year} ${collections.items[collections.items.length - index - 1].date.hour}:${collections.items[collections.items.length - index - 1].date.minute.toString().padLeft(2, '0')})'),
+                                trailing: Container(
+                                    width: 300,
+                                    alignment: Alignment.centerRight,
+                                    child: Row(children: [
+                                      Text(
+                                          '${collections.items[collections.items.length - index - 1].user}   (${collections.items[collections.items.length - index - 1].date.day.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.month.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.year} ${collections.items[collections.items.length - index - 1].date.hour}:${collections.items[collections.items.length - index - 1].date.minute.toString().padLeft(2, '0')})'),
+                                      IconButton(
+                                        icon:
+                                            const Icon(Icons.arrow_forward_ios),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => ImageDialog(
+                                                  context: context,
+                                                  url:
+                                                      '$baseUrl/collections/${collections.items[collections.items.length - index - 1].date.toIso8601String()}'));
+                                        },
+                                      ),
+                                    ])),
                                 selected: collections.selected.contains(
                                     collections.items.length - index - 1),
                                 selectedTileColor: Colors.blue[100],

@@ -37,7 +37,12 @@ class AddButtonState extends State<AddButton> {
   Future<String?> obtainImage() async {
     final String? file;
     if (Platform.isAndroid || Platform.isIOS) {
-      file = (await _picker.pickImage(source: ImageSource.camera))?.path;
+      file = (await _picker.pickImage(
+              source: ImageSource.camera,
+              maxHeight: 200,
+              maxWidth: 100,
+              imageQuality: 0))
+          ?.path;
     } else {
       file = null;
     }
